@@ -1,8 +1,12 @@
 import sys
 import pygame
 from game import PongGame
+from network import trigger_firewall_prompt
 
 def main():
+    # Pre-trigger Windows Defender Firewall access prompt on OS startup
+    trigger_firewall_prompt()
+
     # Initialize Pygame core modules
     pygame.init()
     pygame.font.init()
