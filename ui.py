@@ -166,6 +166,15 @@ class UIRenderer:
             pygame.draw.circle(vignette, (5, 8, 15, alpha), (cx, cy), r)
         self.bg_surf.blit(vignette, (0, 0))
 
+        self.score1_pop = 0.0
+        self.score2_pop = 0.0
+
+    def trigger_score_pop(self, scorer):
+        if scorer == 1:
+            self.score1_pop = 1.0
+        else:
+            self.score2_pop = 1.0
+
     def draw_background(self, surface):
         surface.blit(self.bg_surf, (0, 0))
         
@@ -203,11 +212,24 @@ class UIRenderer:
     def draw_hud(self, surface, score1, score2, p1_name, p2_name, rally_count, ball_speed, powerups_enabled, muted):
         self.draw_center_court(surface)
 
+        self.score1_pop *= 0.88
+        self.score2_pop *= 0.88
+
         s1_surf = self.score_font.render(str(score1), True, (56, 189, 248))
         s2_surf = self.score_font.render(str(score2), True, (244, 63, 94))
         
-        surface.blit(s1_surf, (self.width // 4 - s1_surf.get_width() // 2, 28))
-        surface.blit(s2_surf, (3 * self.width // 4 - s2_surf.get_width() // 2, 28))
+        if self.score1_pop > 0.05:
+            scale = 1.0 + 0.3 * self.score1_pop
+            nw, nh = int(s1_surf.get_width() * scale), int(s1_surf.get_height() * scale)
+            s1_surf = pygame.transform.smoothscale(s1_surf, (max(1, nw), max(1, nh)))
+            
+        if self.score2_pop > 0.05:
+            scale = 1.0 + 0.3 * self.score2_pop
+            nw, nh = int(s2_surf.get_width() * scale), int(s2_surf.get_height() * scale)
+            s2_surf = pygame.transform.smoothscale(s2_surf, (max(1, nw), max(1, nh)))
+
+        surface.blit(s1_surf, (self.width // 4 - s1_surf.get_width() // 2, 28 - (s1_surf.get_height() - 56) // 2))
+        surface.blit(s2_surf, (3 * self.width // 4 - s2_surf.get_width() // 2, 28 - (s2_surf.get_height() - 56) // 2))
 
         p1_lbl = self.sub_font.render(p1_name.upper(), True, (148, 163, 184))
         p2_lbl = self.sub_font.render(p2_name.upper(), True, (148, 163, 184))

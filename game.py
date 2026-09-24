@@ -526,6 +526,7 @@ class PongGame:
             self.state = remote_state
 
     def _on_goal_scored(self, scorer, ball):
+        self.ui.trigger_score_pop(scorer)
         if scorer == 1:
             self.paddle1.score += 1
             self.particle_sys.spawn_goal_explosion(self.width - 15, ball.y, color=(56, 189, 248), count=24)
