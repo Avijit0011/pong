@@ -153,12 +153,41 @@ class UIRenderer:
         self.hud_font = pygame.font.SysFont("Segoe UI", 14) or pygame.font.SysFont("Arial", 14) or pygame.font.Font(None, 16)
         self.btn_font = pygame.font.SysFont("Segoe UI", 16, bold=True) or pygame.font.SysFont("Arial", 16, bold=True) or pygame.font.Font(None, 18)
 
+        # Pre-render subtle radial vignette background surface for extra depth
+        self.bg_surf = pygame.Surface((width, height))
+        self.bg_surf.fill((11, 15, 25))
+        cx, cy = width // 2, height // 2
+        max_r = int((cx**2 + cy**2)**0.5)
+        
+        # Radial gradient overlay steps
+        vignette = pygame.Surface((width, height), pygame.SRCALPHA)
+        for r in range(max_r, 0, -35):
+            alpha = int(45 * (r / max_r)**1.5)
+            pygame.draw.circle(vignette, (5, 8, 15, alpha), (cx, cy), r)
+        self.bg_surf.blit(vignette, (0, 0))
+
     def draw_background(self, surface):
-        surface.fill((11, 15, 25))
+        surface.blit(self.bg_surf, (0, 0))
         
         # Draw sleek minimalist arena border line
         border_rect = pygame.Rect(15, 15, self.width - 30, self.height - 30)
         pygame.draw.rect(surface, (30, 41, 59), border_rect, width=1, border_radius=8)
+        
+        # Accent corner brackets
+        c_len = 16
+        c_col = (51, 65, 85)
+        # Top-Left
+        pygame.draw.line(surface, c_col, (15, 15), (15 + c_len, 15), 2)
+        pygame.draw.line(surface, c_col, (15, 15), (15, 15 + c_len), 2)
+        # Top-Right
+        pygame.draw.line(surface, c_col, (self.width - 15, 15), (self.width - 15 - c_len, 15), 2)
+        pygame.draw.line(surface, c_col, (self.width - 15, 15), (self.width - 15, 15 + c_len), 2)
+        # Bottom-Left
+        pygame.draw.line(surface, c_col, (15, self.height - 15), (15 + c_len, self.height - 15), 2)
+        pygame.draw.line(surface, c_col, (15, self.height - 15), (15, self.height - 15 - c_len), 2)
+        # Bottom-Right
+        pygame.draw.line(surface, c_col, (self.width - 15, self.height - 15), (self.width - 15 - c_len, self.height - 15), 2)
+        pygame.draw.line(surface, c_col, (self.width - 15, self.height - 15), (self.width - 15, self.height - 15 - c_len), 2)
 
     def draw_center_court(self, surface):
         dash_len = 12

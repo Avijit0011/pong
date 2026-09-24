@@ -18,6 +18,7 @@ class Paddle:
         self.speed = 8.5
         self.vy = 0.0
         self.score = 0
+        self.hit_flash = 0.0
         
         # Power-up status timers
         self.extend_timer = 0
@@ -39,6 +40,7 @@ class Paddle:
         self.extend_timer = 0
         self.speed_boost_timer = 0
         self.has_shield = False
+        self.hit_flash = 0.0
 
     def get_rect(self):
         return pygame.Rect(int(self.x - self.width // 2), int(self.y - self.height // 2), self.width, self.height)
@@ -53,6 +55,8 @@ class Paddle:
             self.has_shield = True
 
     def update(self, arena_height, up_pressed, down_pressed, balls=None):
+        self.hit_flash *= 0.85
+
         # Update powerup timers
         if self.extend_timer > 0:
             self.extend_timer -= 1
@@ -154,12 +158,18 @@ class Paddle:
         # Subtle ambient halo around paddle
         glow_size = 6
         glow_surf = pygame.Surface((rect.width + glow_size * 2, rect.height + glow_size * 2), pygame.SRCALPHA)
-        glow_color_alpha = (self.glow_color[0], self.glow_color[1], self.glow_color[2], 35)
+        glow_color_alpha = (self.glow_color[0], self.glow_color[1], self.glow_color[2], int(35 + 40 * self.hit_flash))
         pygame.draw.rect(glow_surf, glow_color_alpha, (0, 0, rect.width + glow_size * 2, rect.height + glow_size * 2), border_radius=6)
         surface.blit(glow_surf, (rect.x - glow_size, rect.y - glow_size))
         
+        # Flash color blend
+        r = int(self.color[0] + (255 - self.color[0]) * self.hit_flash * 0.6)
+        g = int(self.color[1] + (255 - self.color[1]) * self.hit_flash * 0.6)
+        b = int(self.color[2] + (255 - self.color[2]) * self.hit_flash * 0.6)
+        cur_color = (min(255, r), min(255, g), min(255, b))
+
         # Main rounded paddle bar
-        pygame.draw.rect(surface, self.color, rect, border_radius=5)
+        pygame.draw.rect(surface, cur_color, rect, border_radius=5)
         
         # Crisp edge outline
         pygame.draw.rect(surface, (255, 255, 255), rect, width=1, border_radius=5)

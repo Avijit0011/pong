@@ -18,6 +18,9 @@ class Ball:
         self.vx = 0.0
         self.vy = 0.0
         
+        self.squash_x = 1.0
+        self.squash_y = 1.0
+        
         self.trail = []  # List of previous positions (x, y)
         self.max_trail_len = 8
         self.rally_count = 0
@@ -33,10 +36,16 @@ class Ball:
         angle = math.radians(random.uniform(-35, 35))
         self.vx = direction * self.speed * math.cos(angle)
         self.vy = self.speed * math.sin(angle)
+        self.squash_x = 1.0
+        self.squash_y = 1.0
         self.trail.clear()
         self.rally_count = 0
 
     def update(self, arena_width, arena_height, sound_engine=None, particle_system=None):
+        # Lerp squash back to normal
+        self.squash_x += (1.0 - self.squash_x) * 0.2
+        self.squash_y += (1.0 - self.squash_y) * 0.2
+
         # Store current position in trail
         self.trail.insert(0, (self.x, self.y))
         if len(self.trail) > self.max_trail_len:
@@ -53,6 +62,8 @@ class Ball:
         if self.y <= top_bound:
             self.y = top_bound
             self.vy = abs(self.vy)
+            self.squash_x = 1.35
+            self.squash_y = 0.65
             if sound_engine:
                 sound_engine.play('wall_hit')
             if particle_system:
@@ -61,6 +72,8 @@ class Ball:
         elif self.y >= bottom_bound:
             self.y = bottom_bound
             self.vy = -abs(self.vy)
+            self.squash_x = 1.35
+            self.squash_y = 0.65
             if sound_engine:
                 sound_engine.play('wall_hit')
             if particle_system:
@@ -80,6 +93,10 @@ class Ball:
         if distance_sq < (self.radius * self.radius):
             # Collision occurred!
             self.rally_count += 1
+            paddle.hit_flash = 1.0
+            
+            self.squash_x = 0.65
+            self.squash_y = 1.35
             
             # Increase ball speed slightly each hit up to cap
             self.speed = min(self.max_speed, self.speed + 0.5)
@@ -132,6 +149,9 @@ class Ball:
         pygame.draw.circle(glow_surf, (255, 255, 255, 30), (glow_r, glow_r), glow_r)
         surface.blit(glow_surf, (self.x - glow_r, self.y - glow_r))
 
-        # Main clean solid ball
-        pygame.draw.circle(surface, self.color, (int(self.x), int(self.y)), self.radius)
+        # Main clean solid ball with squash & stretch
+        rx = max(3, int(self.radius * self.squash_x))
+        ry = max(3, int(self.radius * self.squash_y))
+        ball_rect = pygame.Rect(int(self.x - rx), int(self.y - ry), rx * 2, ry * 2)
+        pygame.draw.ellipse(surface, self.color, ball_rect)
 
