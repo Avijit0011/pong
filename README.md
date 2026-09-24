@@ -1,6 +1,6 @@
-# 🎮 Neon Pong 2D
+# 🎮 Pong 2D
 
-A feature-rich, high-performance **2D Cyberpunk Retro Arcade Pong game** built in **Python** using **Pygame** — complete with **Online TCP Socket Multiplayer**, **Both-Side Ready System**, **In-Game Chat**, and a **Standalone Executable (.EXE) Builder**!
+A sleek, high-performance **Minimalist 2D Arcade Pong game** built in **Python** using **Pygame** — complete with **Online TCP Socket Multiplayer**, **Both-Side Ready System**, **In-Game Chat**, and a **Standalone Executable (.EXE) Builder**!
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
 ![Pygame](https://img.shields.io/badge/Pygame-2.6%2B-green?logo=pygame&logoColor=white)
@@ -16,17 +16,17 @@ A feature-rich, high-performance **2D Cyberpunk Retro Arcade Pong game** built i
 - 🕹️ **4 Game Modes**:
   - **Single-Player (vs AI)**: 4 distinct difficulty tiers (*Easy*, *Medium*, *Hard*, *Impossible*) powered by real-time predictive trajectory calculations.
   - **2-Player Local**: Play head-to-head on the same keyboard.
-  - **Online Host 🌐**: Host an online game room on your local IP/network.
-  - **Online Join 🔗**: Join a friend's hosted game room anywhere on your LAN or over the internet.
-- 💬 **In-Game Chat System**: Press **`T`** or **`Enter`** during online matches to send real-time neon messages to your opponent.
+  - **Online Host**: Host an online game room on your local IP/network.
+  - **Online Join**: Join a friend's hosted game room anywhere on your LAN or over the internet.
+- 💬 **In-Game Chat System**: Press **`T`** or **`Enter`** during online matches to send real-time messages to your opponent.
 - ✅ **Both-Side Ready Confirmation**: Matches only start when both Host and Joiner confirm they are **`READY`** (press **`SPACE`**).
 - 🛡️ **Windows Firewall Pre-Prompt**: Automated socket initialization triggers native OS Windows Defender Firewall network access prompts on launch.
-- 📦 **Standalone Windows Executable (.EXE)**: Package the complete game into a single `NeonPong2D.exe` file that your friends can open and play without installing Python!
+- 📦 **Standalone Windows Executable (.EXE)**: Package the complete game into a single `Pong2D.exe` file that your friends can open and play without installing Python!
 - 🌐 **Dedicated Server Script**: Optionally host headless game servers using `python server.py --port 5555`.
-- 🎨 **Neon Cyberpunk Aesthetics**: Deep space slate background, glowing cyan and magenta paddles, dynamic motion blur ball trails, particle impact sparks, and screen shake haptics.
+- 🎨 **Minimalist Aesthetics**: Deep slate background, sleek sky blue and rose red paddles, smooth motion trail, crisp micro-sparks, and subtle screen feedback.
 - 🎵 **Procedural Audio Synthesizer**: Self-contained sound engine generating retro audio waveforms directly in memory — zero external media asset dependencies required!
 - ⚡ **Dynamic Power-Ups**: Speed Ball, Goal Shield, Paddle Extend, Multi-Ball.
-- ⚙️ **HUD & Custom Settings**: Configurable target score (3, 5, 10, 15 points), power-up toggle, live rally counter, real-time ball speed meter, and mute sound toggle.
+- ⚙️ **HUD & Custom Settings**: Configurable target score (3, 5, 10, 15 points), power-up toggle, live rally counter, and mute sound toggle.
 
 ---
 

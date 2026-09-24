@@ -36,8 +36,8 @@ class PongGame:
         self.status_color = (0, 245, 255)
         
         # Entities
-        self.paddle1 = Paddle(40, height // 2, is_ai=False, color=(0, 245, 255), glow_color=(0, 180, 255))
-        self.paddle2 = Paddle(width - 40, height // 2, is_ai=True, color=(255, 0, 128), glow_color=(255, 0, 180))
+        self.paddle1 = Paddle(40, height // 2, is_ai=False, color=(56, 189, 248), glow_color=(56, 189, 248))
+        self.paddle2 = Paddle(width - 40, height // 2, is_ai=True, color=(244, 63, 94), glow_color=(244, 63, 94))
         self.paddle2.ai_difficulty = self.ai_difficulty
         
         self.balls = [Ball(width // 2, height // 2)]
@@ -66,31 +66,31 @@ class PongGame:
         btn_h = 40
         
         self.btn_mode = Button(cx - btn_w // 2, 195, btn_w, btn_h, "MODE: 1-PLAYER (AI)", self.ui.btn_font)
-        self.btn_diff = Button(cx - btn_w // 2, 245, btn_w, btn_h, f"AI: {self.ai_difficulty.upper()}", self.ui.btn_font)
+        self.btn_diff = Button(cx - btn_w // 2, 245, btn_w, btn_h, f"AI DIFFICULTY: {self.ai_difficulty.upper()}", self.ui.btn_font)
         self.btn_score = Button(cx - btn_w // 2, 295, btn_w, btn_h, f"TARGET SCORE: {self.target_score}", self.ui.btn_font)
         self.btn_power = Button(cx - btn_w // 2, 345, btn_w, btn_h, "POWER-UPS: ON", self.ui.btn_font)
         
-        self.btn_start = Button(cx - btn_w // 2, 405, btn_w, 46, "START MATCH 🚀", self.ui.btn_font, color=(0, 160, 90), hover_color=(0, 210, 120))
-        self.btn_quit = Button(cx - btn_w // 2, 461, btn_w, 44, "QUIT GAME ❌", self.ui.btn_font, color=(160, 40, 40), hover_color=(210, 60, 60))
+        self.btn_start = Button(cx - btn_w // 2, 405, btn_w, 44, "START MATCH", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
+        self.btn_quit = Button(cx - btn_w // 2, 459, btn_w, 42, "QUIT", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(244, 63, 94))
         
         # Lobby buttons
-        self.btn_connect = Button(cx - 110, 305, 220, 44, "CONNECT 🔗", self.ui.btn_font, color=(0, 150, 200), hover_color=(0, 190, 240))
-        self.btn_lobby_cancel = Button(cx - 110, 360, 220, 42, "CANCEL / BACK ⬅️", self.ui.btn_font, color=(140, 40, 40), hover_color=(180, 60, 60))
+        self.btn_connect = Button(cx - 110, 305, 220, 42, "CONNECT", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
+        self.btn_lobby_cancel = Button(cx - 110, 360, 220, 40, "CANCEL", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85))
 
         # Ready Button
-        self.btn_toggle_ready = Button(cx - 110, self.height // 2 + 10, 220, 46, "TOGGLE READY ✅", self.ui.btn_font, color=(0, 160, 100), hover_color=(0, 200, 140))
+        self.btn_toggle_ready = Button(cx - 110, self.height // 2 + 10, 220, 44, "TOGGLE READY", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
 
         # Pause Overlay buttons
-        self.btn_pause_resume = Button(cx - 210, 310, 130, 46, "RESUME ▶️", self.ui.btn_font, color=(0, 150, 200), hover_color=(0, 190, 240))
-        self.btn_pause_menu = Button(cx - 65, 310, 130, 46, "MENU 🏠", self.ui.btn_font)
-        self.btn_pause_quit = Button(cx + 80, 310, 130, 46, "QUIT ❌", self.ui.btn_font, color=(160, 40, 40), hover_color=(210, 60, 60))
+        self.btn_pause_resume = Button(cx - 210, 310, 130, 44, "RESUME", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
+        self.btn_pause_menu = Button(cx - 65, 310, 130, 44, "MAIN MENU", self.ui.btn_font)
+        self.btn_pause_quit = Button(cx + 80, 310, 130, 44, "QUIT", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(244, 63, 94))
 
         # Game Over buttons
-        self.btn_restart = Button(cx - 210, 330, 130, 48, "REPLAY 🔄", self.ui.btn_font)
-        self.btn_go_menu = Button(cx - 65, 330, 130, 48, "MENU 🏠", self.ui.btn_font)
-        self.btn_go_quit = Button(cx + 80, 330, 130, 48, "QUIT ❌", self.ui.btn_font, color=(160, 40, 40), hover_color=(210, 60, 60))
+        self.btn_restart = Button(cx - 210, 330, 130, 44, "PLAY AGAIN", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
+        self.btn_go_menu = Button(cx - 65, 330, 130, 44, "MAIN MENU", self.ui.btn_font)
+        self.btn_go_quit = Button(cx + 80, 330, 130, 44, "QUIT", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(244, 63, 94))
 
-    def trigger_screen_shake(self, magnitude=12, duration=15):
+    def trigger_screen_shake(self, magnitude=3, duration=8):
         self.shake_magnitude = magnitude
         self.shake_time = duration
 
@@ -178,15 +178,15 @@ class PongGame:
                     elif self.mode == "TWO_PLAYER":
                         self.btn_mode.text = "MODE: 2-PLAYER LOCAL"
                     elif self.mode == "ONLINE_HOST":
-                        self.btn_mode.text = "MODE: ONLINE HOST 🌐"
+                        self.btn_mode.text = "MODE: ONLINE HOST"
                     elif self.mode == "ONLINE_JOIN":
-                        self.btn_mode.text = "MODE: ONLINE JOIN 🔗"
+                        self.btn_mode.text = "MODE: ONLINE JOIN"
 
                 elif self.btn_diff.check_hover(mouse_pos) and self.mode == "VS_AI":
                     diffs = ["Easy", "Medium", "Hard", "Impossible"]
                     idx = (diffs.index(self.ai_difficulty) + 1) % len(diffs)
                     self.ai_difficulty = diffs[idx]
-                    self.btn_diff.text = f"AI: {self.ai_difficulty.upper()}"
+                    self.btn_diff.text = f"AI DIFFICULTY: {self.ai_difficulty.upper()}"
 
                 elif self.btn_score.check_hover(mouse_pos):
                     scores = [3, 5, 10, 15]
@@ -528,20 +528,20 @@ class PongGame:
     def _on_goal_scored(self, scorer, ball):
         if scorer == 1:
             self.paddle1.score += 1
-            self.particle_sys.spawn_goal_explosion(self.width - 15, ball.y, color=(0, 245, 255), count=60)
+            self.particle_sys.spawn_goal_explosion(self.width - 15, ball.y, color=(56, 189, 248), count=24)
         else:
             self.paddle2.score += 1
-            self.particle_sys.spawn_goal_explosion(15, ball.y, color=(255, 0, 128), count=60)
+            self.particle_sys.spawn_goal_explosion(15, ball.y, color=(244, 63, 94), count=24)
 
         self.sound.play('score')
-        self.trigger_screen_shake(16, 20)
+        self.trigger_screen_shake(4, 10)
 
         if self.paddle1.score >= self.target_score:
             self.winner_text = "PLAYER 1 WINS!"
             self.state = "GAME_OVER"
             self.sound.play('victory')
         elif self.paddle2.score >= self.target_score:
-            self.winner_text = "PLAYER 2 WINS!" if self.mode != "VS_AI" else "AI OVERLORD WINS!"
+            self.winner_text = "PLAYER 2 WINS!" if self.mode != "VS_AI" else "AI WINS!"
             self.state = "GAME_OVER"
             self.sound.play('victory')
 
@@ -613,15 +613,12 @@ class PongGame:
     def _draw_main_menu(self, surface):
         cx = self.width // 2
         
-        t_surf = self.ui.title_font.render("NEON PONG 2D", True, (0, 245, 255))
+        t_surf = self.ui.title_font.render("PONG 2D", True, (241, 245, 249))
         t_rect = t_surf.get_rect(center=(cx, 95))
-        
-        glow_t = self.ui.title_font.render("NEON PONG 2D", True, (0, 180, 255))
-        surface.blit(glow_t, (t_rect.x - 3, t_rect.y - 3))
         surface.blit(t_surf, t_rect)
 
-        sub_surf = self.ui.sub_font.render("RETRO DESKTOP ARCADE EDITION", True, (255, 0, 128))
-        s_rect = sub_surf.get_rect(center=(cx, 150))
+        sub_surf = self.ui.sub_font.render("MINIMALIST ARCADE", True, (148, 163, 184))
+        s_rect = sub_surf.get_rect(center=(cx, 145))
         surface.blit(sub_surf, s_rect)
 
         self.btn_mode.draw(surface)
@@ -634,27 +631,27 @@ class PongGame:
 
         if self.status_msg:
             st_surf = self.ui.hud_font.render(self.status_msg, True, self.status_color)
-            surface.blit(st_surf, (cx - st_surf.get_width() // 2, 450))
+            surface.blit(st_surf, (cx - st_surf.get_width() // 2, 445))
 
-        legend_txt = "CONTROLS: P1 [W / S]  |  P2 [UP / DOWN]  |  PAUSE [ESC / P]  |  MUTE [M]"
-        l_surf = self.ui.hud_font.render(legend_txt, True, (130, 160, 190))
+        legend_txt = "CONTROLS: P1 [W / S]   |   P2 [UP / DOWN]   |   PAUSE [ESC / P]   |   MUTE [M]"
+        l_surf = self.ui.hud_font.render(legend_txt, True, (100, 116, 139))
         l_rect = l_surf.get_rect(center=(cx, self.height - 25))
         surface.blit(l_surf, l_rect)
 
     def _draw_host_lobby(self, surface):
         cx = self.width // 2
         
-        t_surf = self.ui.title_font.render("ONLINE LOBBY (HOST)", True, (0, 245, 255))
+        t_surf = self.ui.title_font.render("ONLINE LOBBY", True, (241, 245, 249))
         surface.blit(t_surf, t_surf.get_rect(center=(cx, 130)))
 
-        ip_lbl = self.ui.sub_font.render(f"YOUR LAN IP: {self.local_ip}", True, (255, 215, 0))
+        ip_lbl = self.ui.sub_font.render(f"YOUR LOCAL IP: {self.local_ip}", True, (56, 189, 248))
         surface.blit(ip_lbl, ip_lbl.get_rect(center=(cx, 210)))
 
-        port_lbl = self.ui.sub_font.render(f"PORT: {self.host_port}", True, (200, 220, 240))
+        port_lbl = self.ui.sub_font.render(f"PORT: {self.host_port}", True, (148, 163, 184))
         surface.blit(port_lbl, port_lbl.get_rect(center=(cx, 250)))
 
         dots = "." * ((pygame.time.get_ticks() // 400) % 4)
-        st_surf = self.ui.sub_font.render(f"WAITING FOR PLAYER 2 TO JOIN{dots}", True, (0, 245, 255))
+        st_surf = self.ui.sub_font.render(f"Waiting for Player 2 to join{dots}", True, (241, 245, 249))
         surface.blit(st_surf, st_surf.get_rect(center=(cx, 310)))
 
         self.btn_lobby_cancel.draw(surface)
@@ -662,10 +659,10 @@ class PongGame:
     def _draw_join_lobby(self, surface):
         cx = self.width // 2
         
-        t_surf = self.ui.title_font.render("JOIN ONLINE MATCH", True, (255, 0, 128))
+        t_surf = self.ui.title_font.render("JOIN ONLINE MATCH", True, (241, 245, 249))
         surface.blit(t_surf, t_surf.get_rect(center=(cx, 130)))
 
-        ip_lbl = self.ui.sub_font.render("ENTER HOST IP ADDRESS:", True, (200, 220, 240))
+        ip_lbl = self.ui.sub_font.render("ENTER HOST IP ADDRESS:", True, (148, 163, 184))
         surface.blit(ip_lbl, ip_lbl.get_rect(center=(cx, 205)))
 
         self.join_ip_box.draw(surface)

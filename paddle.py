@@ -2,7 +2,7 @@ import random
 import pygame
 
 class Paddle:
-    def __init__(self, x, y, width=16, height=100, is_ai=False, color=(0, 245, 255), glow_color=(0, 180, 255)):
+    def __init__(self, x, y, width=14, height=95, is_ai=False, color=(56, 189, 248), glow_color=(56, 189, 248)):
         self.start_x = x
         self.start_y = y
         self.x = x
@@ -151,22 +151,22 @@ class Paddle:
     def draw(self, surface):
         rect = self.get_rect()
         
-        # Glow effect surface
-        glow_size = 12
+        # Subtle ambient halo around paddle
+        glow_size = 6
         glow_surf = pygame.Surface((rect.width + glow_size * 2, rect.height + glow_size * 2), pygame.SRCALPHA)
-        glow_color_alpha = (self.glow_color[0], self.glow_color[1], self.glow_color[2], 90)
-        pygame.draw.rect(glow_surf, glow_color_alpha, (0, 0, rect.width + glow_size * 2, rect.height + glow_size * 2), border_radius=8)
+        glow_color_alpha = (self.glow_color[0], self.glow_color[1], self.glow_color[2], 35)
+        pygame.draw.rect(glow_surf, glow_color_alpha, (0, 0, rect.width + glow_size * 2, rect.height + glow_size * 2), border_radius=6)
         surface.blit(glow_surf, (rect.x - glow_size, rect.y - glow_size))
         
         # Main rounded paddle bar
-        pygame.draw.rect(surface, self.color, rect, border_radius=6)
+        pygame.draw.rect(surface, self.color, rect, border_radius=5)
         
-        # Core inner bright highlight line
-        inner_rect = pygame.Rect(rect.x + 3, rect.y + 4, max(2, rect.width - 6), max(4, rect.height - 8))
-        pygame.draw.rect(surface, (255, 255, 255), inner_rect, border_radius=3)
+        # Crisp edge outline
+        pygame.draw.rect(surface, (255, 255, 255), rect, width=1, border_radius=5)
         
         # Shield wall indicator if active
         if self.has_shield:
-            shield_x = rect.x - 18 if rect.x > surface.get_width() / 2 else rect.x + rect.width + 10
-            shield_rect = pygame.Rect(shield_x, 15, 6, surface.get_height() - 30)
-            pygame.draw.rect(surface, (0, 255, 128), shield_rect, border_radius=3)
+            shield_x = rect.x - 12 if rect.x > surface.get_width() / 2 else rect.x + rect.width + 6
+            shield_rect = pygame.Rect(shield_x, 16, 4, surface.get_height() - 32)
+            pygame.draw.rect(surface, (52, 211, 153), shield_rect, border_radius=2)
+

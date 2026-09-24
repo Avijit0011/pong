@@ -3,7 +3,7 @@ import random
 import pygame
 
 class Ball:
-    def __init__(self, x, y, radius=10, color=(255, 230, 0), glow_color=(255, 180, 0)):
+    def __init__(self, x, y, radius=9, color=(241, 245, 249), glow_color=(148, 163, 184)):
         self.start_x = x
         self.start_y = y
         self.x = x
@@ -12,14 +12,14 @@ class Ball:
         self.color = color
         self.glow_color = glow_color
         
-        self.base_speed = 9.0
-        self.max_speed = 22.0
+        self.base_speed = 8.5
+        self.max_speed = 20.0
         self.speed = self.base_speed
         self.vx = 0.0
         self.vy = 0.0
         
-        self.trail = []  # List of previous positions (x, y, radius, alpha)
-        self.max_trail_len = 14
+        self.trail = []  # List of previous positions (x, y)
+        self.max_trail_len = 8
         self.rally_count = 0
         
         self.reset(direction=random.choice([-1, 1]))
@@ -56,7 +56,7 @@ class Ball:
             if sound_engine:
                 sound_engine.play('wall_hit')
             if particle_system:
-                particle_system.spawn_impact_sparks(self.x, self.y, 0, color=(255, 255, 255), count=12)
+                particle_system.spawn_impact_sparks(self.x, self.y, 0, color=(241, 245, 249), count=6)
 
         elif self.y >= bottom_bound:
             self.y = bottom_bound
@@ -64,7 +64,7 @@ class Ball:
             if sound_engine:
                 sound_engine.play('wall_hit')
             if particle_system:
-                particle_system.spawn_impact_sparks(self.x, self.y, 0, color=(255, 255, 255), count=12)
+                particle_system.spawn_impact_sparks(self.x, self.y, 0, color=(241, 245, 249), count=6)
 
     def check_paddle_collision(self, paddle, sound_engine=None, particle_system=None):
         paddle_rect = paddle.get_rect()
@@ -82,7 +82,7 @@ class Ball:
             self.rally_count += 1
             
             # Increase ball speed slightly each hit up to cap
-            self.speed = min(self.max_speed, self.speed + 0.55)
+            self.speed = min(self.max_speed, self.speed + 0.5)
             
             # Calculate hit position relative to paddle center (-1.0 at top to +1.0 at bottom)
             relative_intersect_y = (self.y - paddle.y) / (paddle.height / 2.0)
@@ -109,30 +109,29 @@ class Ball:
                 sound_engine.play('paddle_hit')
             if particle_system:
                 sparks_color = paddle.color
-                particle_system.spawn_impact_sparks(self.x, self.y, direction, color=sparks_color, count=22)
+                particle_system.spawn_impact_sparks(self.x, self.y, direction, color=sparks_color, count=8)
             
             return True
         return False
 
     def draw(self, surface):
-        # Draw glowing trail
+        # Draw smooth tapered trail
         for idx, (tx, ty) in enumerate(self.trail):
             ratio = 1.0 - (idx / len(self.trail))
-            t_radius = max(2, int(self.radius * ratio * 0.85))
-            alpha = int(180 * (ratio ** 1.5))
+            t_radius = max(2, int(self.radius * ratio * 0.75))
+            alpha = int(100 * ratio)
             
-            trail_surf = pygame.Surface((t_radius * 4, t_radius * 4), pygame.SRCALPHA)
+            trail_surf = pygame.Surface((t_radius * 2, t_radius * 2), pygame.SRCALPHA)
             t_color = (self.glow_color[0], self.glow_color[1], self.glow_color[2], alpha)
-            pygame.draw.circle(trail_surf, t_color, (t_radius * 2, t_radius * 2), t_radius)
-            surface.blit(trail_surf, (tx - t_radius * 2, ty - t_radius * 2))
+            pygame.draw.circle(trail_surf, t_color, (t_radius, t_radius), t_radius)
+            surface.blit(trail_surf, (tx - t_radius, ty - t_radius))
 
-        # Draw main ball glow
-        glow_r = int(self.radius * 2.2)
+        # Soft subtle ambient halo
+        glow_r = self.radius + 5
         glow_surf = pygame.Surface((glow_r * 2, glow_r * 2), pygame.SRCALPHA)
-        pygame.draw.circle(glow_surf, (self.glow_color[0], self.glow_color[1], self.glow_color[2], 100), (glow_r, glow_r), glow_r)
+        pygame.draw.circle(glow_surf, (255, 255, 255, 30), (glow_r, glow_r), glow_r)
         surface.blit(glow_surf, (self.x - glow_r, self.y - glow_r))
 
-        # Main solid ball
+        # Main clean solid ball
         pygame.draw.circle(surface, self.color, (int(self.x), int(self.y)), self.radius)
-        # Inner white bright core
-        pygame.draw.circle(surface, (255, 255, 255), (int(self.x - 2), int(self.y - 2)), max(2, self.radius - 4))
+

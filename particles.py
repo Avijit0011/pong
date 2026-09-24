@@ -28,19 +28,14 @@ class Particle:
         current_size = max(1, int(self.size * alpha_ratio))
         
         r, g, b = self.color[:3]
-        color_with_alpha = (r, g, b, int(255 * alpha_ratio))
+        color_with_alpha = (r, g, b, int(220 * alpha_ratio))
         
-        # Create temporary alpha surface for soft glow particles
-        surf_size = current_size * 4
+        # Crisp particle rendering
+        surf_size = current_size * 2 + 2
         particle_surf = pygame.Surface((surf_size, surf_size), pygame.SRCALPHA)
         center = (surf_size // 2, surf_size // 2)
         
-        # Outer glow
-        glow_color = (r, g, b, int(100 * alpha_ratio))
-        pygame.draw.circle(particle_surf, glow_color, center, surf_size // 2)
-        # Core particle
         pygame.draw.circle(particle_surf, color_with_alpha, center, current_size)
-        
         surface.blit(particle_surf, (self.x - surf_size // 2, self.y - surf_size // 2))
 
 class ParticleSystem:
@@ -56,32 +51,32 @@ class ParticleSystem:
         for p in self.particles:
             p.draw(surface)
 
-    def spawn_impact_sparks(self, x, y, direction_x, color=(0, 245, 255), count=25):
+    def spawn_impact_sparks(self, x, y, direction_x, color=(56, 189, 248), count=8):
         for _ in range(count):
-            angle_speed_x = direction_x * random.uniform(2.0, 9.0)
-            speed_y = random.uniform(-6.0, 6.0)
-            size = random.uniform(3, 7)
-            lifespan = random.randint(15, 35)
+            angle_speed_x = direction_x * random.uniform(1.5, 5.0)
+            speed_y = random.uniform(-3.5, 3.5)
+            size = random.uniform(2, 4)
+            lifespan = random.randint(10, 22)
             self.particles.append(Particle(x, y, angle_speed_x, speed_y, color, size, lifespan))
 
-    def spawn_goal_explosion(self, x, y, color=(255, 0, 128), count=60):
+    def spawn_goal_explosion(self, x, y, color=(244, 63, 94), count=24):
         for _ in range(count):
             angle = random.uniform(0, 6.28318)
-            speed = random.uniform(3.0, 14.0)
+            speed = random.uniform(2.0, 8.0)
             vx = math_cos(angle) * speed
             vy = math_sin(angle) * speed
-            size = random.uniform(4, 9)
-            lifespan = random.randint(25, 55)
+            size = random.uniform(2.5, 5)
+            lifespan = random.randint(18, 35)
             self.particles.append(Particle(x, y, vx, vy, color, size, lifespan))
 
-    def spawn_powerup_sparkles(self, x, y, color=(255, 215, 0), count=30):
+    def spawn_powerup_sparkles(self, x, y, color=(245, 158, 11), count=12):
         for _ in range(count):
             angle = random.uniform(0, 6.28318)
-            speed = random.uniform(1.5, 6.0)
+            speed = random.uniform(1.0, 4.0)
             vx = math_cos(angle) * speed
             vy = math_sin(angle) * speed
-            size = random.uniform(3, 6)
-            lifespan = random.randint(20, 40)
+            size = random.uniform(2, 4)
+            lifespan = random.randint(12, 25)
             self.particles.append(Particle(x, y, vx, vy, color, size, lifespan))
 
 def math_cos(rad):
@@ -91,3 +86,4 @@ def math_cos(rad):
 def math_sin(rad):
     import math
     return math.sin(rad)
+

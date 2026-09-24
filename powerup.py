@@ -3,17 +3,17 @@ import random
 import pygame
 
 POWERUP_TYPES = {
-    "SPEED": {"color": (255, 60, 60), "glow": (255, 0, 0), "icon": "⚡", "label": "SPEED BALL"},
-    "SHIELD": {"color": (0, 255, 128), "glow": (0, 200, 100), "icon": "🛡️", "label": "GOAL SHIELD"},
-    "EXTEND": {"color": (255, 200, 0), "glow": (220, 160, 0), "icon": "📏", "label": "PADDLE EXTEND"},
-    "MULTIBALL": {"color": (200, 80, 255), "glow": (160, 0, 220), "icon": "🎱", "label": "MULTI BALL"}
+    "SPEED": {"color": (239, 68, 68), "glow": (239, 68, 68), "label": "S"},
+    "SHIELD": {"color": (16, 185, 129), "glow": (16, 185, 129), "label": "W"},
+    "EXTEND": {"color": (245, 158, 11), "glow": (245, 158, 11), "label": "E"},
+    "MULTIBALL": {"color": (99, 102, 241), "glow": (99, 102, 241), "label": "M"}
 }
 
 class PowerUp:
     def __init__(self, x, y, p_type):
         self.x = x
         self.y = y
-        self.radius = 18
+        self.radius = 15
         self.type = p_type
         self.info = POWERUP_TYPES[p_type]
         self.lifespan = 480  # 8 seconds at 60fps
@@ -21,7 +21,7 @@ class PowerUp:
 
     def update(self):
         self.lifespan -= 1
-        self.pulse_time += 0.08
+        self.pulse_time += 0.05
 
     def get_rect(self):
         return pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
@@ -30,23 +30,22 @@ class PowerUp:
         if self.lifespan <= 0:
             return
             
-        # Pulse size calculation
-        pulse_scale = 1.0 + 0.15 * math.sin(self.pulse_time)
+        pulse_scale = 1.0 + 0.08 * math.sin(self.pulse_time)
         cur_radius = int(self.radius * pulse_scale)
         
-        # Outer glow
-        glow_r = cur_radius + 10
+        # Soft ambient glow
+        glow_r = cur_radius + 6
         glow_surf = pygame.Surface((glow_r * 2, glow_r * 2), pygame.SRCALPHA)
         gc = self.info["glow"]
-        pygame.draw.circle(glow_surf, (gc[0], gc[1], gc[2], 110), (glow_r, glow_r), glow_r)
+        pygame.draw.circle(glow_surf, (gc[0], gc[1], gc[2], 30), (glow_r, glow_r), glow_r)
         surface.blit(glow_surf, (self.x - glow_r, self.y - glow_r))
         
         # Main core shape
         pygame.draw.circle(surface, self.info["color"], (int(self.x), int(self.y)), cur_radius)
-        pygame.draw.circle(surface, (255, 255, 255), (int(self.x), int(self.y)), cur_radius, width=2)
+        pygame.draw.circle(surface, (255, 255, 255), (int(self.x), int(self.y)), cur_radius, width=1)
         
-        # Render text label/icon inside
-        txt_surf = font.render(self.type[0], True, (255, 255, 255))
+        # Label letter
+        txt_surf = font.render(self.info["label"], True, (255, 255, 255))
         txt_rect = txt_surf.get_rect(center=(int(self.x), int(self.y)))
         surface.blit(txt_surf, txt_rect)
 
@@ -103,7 +102,7 @@ class PowerUpManager:
                         beneficiary.apply_powerup(p.type)
                         
                     sound_engine.play('powerup')
-                    particle_system.spawn_powerup_sparkles(p.x, p.y, color=p.info["color"], count=35)
+                    particle_system.spawn_powerup_sparkles(p.x, p.y, color=p.info["color"], count=12)
                     self.powerups.remove(p)
                     break
 
@@ -112,3 +111,4 @@ class PowerUpManager:
             return
         for p in self.powerups:
             p.draw(surface, font)
+

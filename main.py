@@ -15,7 +15,7 @@ def main():
     SCREEN_WIDTH = 1000
     SCREEN_HEIGHT = 600
     
-    pygame.display.set_caption("Neon Pong 2D")
+    pygame.display.set_caption("Pong 2D")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     

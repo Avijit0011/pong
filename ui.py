@@ -2,7 +2,7 @@ import pygame
 import time
 
 class Button:
-    def __init__(self, x, y, width, height, text, font, color=(30, 40, 60), hover_color=(0, 180, 255), text_color=(255, 255, 255)):
+    def __init__(self, x, y, width, height, text, font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(241, 245, 249)):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.font = font
@@ -17,17 +17,17 @@ class Button:
 
     def draw(self, surface):
         bg_col = self.hover_color if self.is_hovered else self.color
-        border_col = (0, 245, 255) if self.is_hovered else (80, 120, 160)
+        border_col = (56, 189, 248) if self.is_hovered else (71, 85, 105)
         
-        # Outer glow if hovered
+        # Subtle ambient border shadow if hovered
         if self.is_hovered:
-            glow_surf = pygame.Surface((self.rect.width + 12, self.rect.height + 12), pygame.SRCALPHA)
-            pygame.draw.rect(glow_surf, (0, 245, 255, 80), (0, 0, self.rect.width + 12, self.rect.height + 12), border_radius=10)
-            surface.blit(glow_surf, (self.rect.x - 6, self.rect.y - 6))
+            glow_surf = pygame.Surface((self.rect.width + 8, self.rect.height + 8), pygame.SRCALPHA)
+            pygame.draw.rect(glow_surf, (56, 189, 248, 30), (0, 0, self.rect.width + 8, self.rect.height + 8), border_radius=8)
+            surface.blit(glow_surf, (self.rect.x - 4, self.rect.y - 4))
 
         # Main button body
-        pygame.draw.rect(surface, bg_col, self.rect, border_radius=8)
-        pygame.draw.rect(surface, border_col, self.rect, width=2, border_radius=8)
+        pygame.draw.rect(surface, bg_col, self.rect, border_radius=6)
+        pygame.draw.rect(surface, border_col, self.rect, width=1, border_radius=6)
         
         # Text label
         txt_surf = self.font.render(self.text, True, self.text_color)
@@ -53,14 +53,14 @@ class InputBox:
                     self.text += event.unicode
 
     def draw(self, surface):
-        bg_col = (20, 30, 50) if not self.active else (30, 45, 75)
-        border_col = (0, 245, 255) if self.active else (100, 130, 160)
+        bg_col = (15, 23, 42) if not self.active else (30, 41, 59)
+        border_col = (56, 189, 248) if self.active else (71, 85, 105)
         
-        pygame.draw.rect(surface, bg_col, self.rect, border_radius=8)
-        pygame.draw.rect(surface, border_col, self.rect, width=2, border_radius=8)
+        pygame.draw.rect(surface, bg_col, self.rect, border_radius=6)
+        pygame.draw.rect(surface, border_col, self.rect, width=1, border_radius=6)
         
         display_text = self.text + ("|" if self.active and (pygame.time.get_ticks() // 500) % 2 == 0 else "")
-        txt_surf = self.font.render(display_text, True, (255, 255, 255))
+        txt_surf = self.font.render(display_text, True, (241, 245, 249))
         surface.blit(txt_surf, (self.rect.x + 15, self.rect.y + (self.rect.height - txt_surf.get_height()) // 2))
 
 
@@ -71,7 +71,7 @@ class ChatSystem:
         self.active = False
         self.input_text = ""
 
-    def add_message(self, sender, text, color=(0, 245, 255)):
+    def add_message(self, sender, text, color=(56, 189, 248)):
         self.messages.append({
             "sender": sender,
             "text": text,
@@ -108,14 +108,12 @@ class ChatSystem:
         return None
 
     def draw(self, surface, screen_height):
-        # Render recent chat log (last 5 messages)
         now = time.time()
-        start_y = screen_height - 170
+        start_y = screen_height - 160
         
-        # Background container for chat
-        chat_box = pygame.Surface((340, 110), pygame.SRCALPHA)
-        chat_box.fill((10, 15, 30, 160))
-        pygame.draw.rect(chat_box, (0, 180, 255, 100), (0, 0, 340, 110), width=1, border_radius=6)
+        chat_box = pygame.Surface((340, 105), pygame.SRCALPHA)
+        chat_box.fill((15, 23, 42, 180))
+        pygame.draw.rect(chat_box, (51, 65, 85, 120), (0, 0, 340, 105), width=1, border_radius=6)
         surface.blit(chat_box, (15, start_y))
 
         recent_msgs = [m for m in self.messages if now - m["time"] < 12.0 or self.active][-5:]
@@ -123,25 +121,24 @@ class ChatSystem:
         for msg in recent_msgs:
             prefix_color = msg["color"]
             sender_surf = self.font.render(f"[{msg['sender']}]: ", True, prefix_color)
-            txt_surf = self.font.render(msg["text"], True, (240, 240, 240))
+            txt_surf = self.font.render(msg["text"], True, (226, 232, 240))
             
             surface.blit(sender_surf, (22, line_y))
             surface.blit(txt_surf, (22 + sender_surf.get_width(), line_y))
-            line_y += 20
+            line_y += 19
 
-        # Render Active Input Box if typing
         if self.active:
-            inp_box_surf = pygame.Surface((340, 32), pygame.SRCALPHA)
-            inp_box_surf.fill((20, 35, 60, 220))
-            pygame.draw.rect(inp_box_surf, (0, 245, 255), (0, 0, 340, 32), width=2, border_radius=6)
-            surface.blit(inp_box_surf, (15, screen_height - 52))
+            inp_box_surf = pygame.Surface((340, 30), pygame.SRCALPHA)
+            inp_box_surf.fill((30, 41, 59, 230))
+            pygame.draw.rect(inp_box_surf, (56, 189, 248), (0, 0, 340, 30), width=1, border_radius=6)
+            surface.blit(inp_box_surf, (15, screen_height - 48))
 
             prompt = f"CHAT: {self.input_text}" + ("|" if (pygame.time.get_ticks() // 400) % 2 == 0 else "")
-            p_surf = self.font.render(prompt, True, (0, 245, 255))
-            surface.blit(p_surf, (25, screen_height - 45))
+            p_surf = self.font.render(prompt, True, (56, 189, 248))
+            surface.blit(p_surf, (25, screen_height - 42))
         else:
-            hint_surf = self.font.render("Press [T] or [ENTER] to Chat", True, (100, 130, 170))
-            surface.blit(hint_surf, (22, screen_height - 52))
+            hint_surf = self.font.render("Press [T] or [ENTER] to Chat", True, (100, 116, 139))
+            surface.blit(hint_surf, (22, screen_height - 48))
 
 
 class UIRenderer:
@@ -149,65 +146,65 @@ class UIRenderer:
         self.width = width
         self.height = height
         
-        # Initialize default fonts safely
         pygame.font.init()
-        self.title_font = pygame.font.SysFont("Impact", 64) or pygame.font.Font(None, 72)
-        self.sub_font = pygame.font.SysFont("Arial", 28, bold=True) or pygame.font.Font(None, 32)
-        self.score_font = pygame.font.SysFont("Consolas", 52, bold=True) or pygame.font.Font(None, 56)
-        self.hud_font = pygame.font.SysFont("Consolas", 18, bold=True) or pygame.font.Font(None, 20)
-        self.btn_font = pygame.font.SysFont("Arial", 22, bold=True) or pygame.font.Font(None, 24)
+        self.title_font = pygame.font.SysFont("Segoe UI", 48, bold=True) or pygame.font.SysFont("Helvetica Neue", 48, bold=True) or pygame.font.Font(None, 52)
+        self.sub_font = pygame.font.SysFont("Segoe UI", 20, bold=True) or pygame.font.SysFont("Helvetica Neue", 20, bold=True) or pygame.font.Font(None, 22)
+        self.score_font = pygame.font.SysFont("Segoe UI", 56, bold=True) or pygame.font.SysFont("Helvetica Neue", 56, bold=True) or pygame.font.Font(None, 60)
+        self.hud_font = pygame.font.SysFont("Segoe UI", 14) or pygame.font.SysFont("Arial", 14) or pygame.font.Font(None, 16)
+        self.btn_font = pygame.font.SysFont("Segoe UI", 16, bold=True) or pygame.font.SysFont("Arial", 16, bold=True) or pygame.font.Font(None, 18)
 
     def draw_background(self, surface):
-        surface.fill((10, 14, 26))
-        grid_color = (20, 30, 50)
-        for y in range(0, self.height, 40):
-            pygame.draw.line(surface, grid_color, (0, y), (self.width, y), 1)
+        surface.fill((11, 15, 25))
+        
+        # Draw sleek minimalist arena border line
+        border_rect = pygame.Rect(15, 15, self.width - 30, self.height - 30)
+        pygame.draw.rect(surface, (30, 41, 59), border_rect, width=1, border_radius=8)
 
     def draw_center_court(self, surface):
-        dash_len = 16
-        gap_len = 12
+        dash_len = 12
+        gap_len = 10
         cx = self.width // 2
-        for y in range(20, self.height - 20, dash_len + gap_len):
-            pygame.draw.line(surface, (0, 180, 255), (cx, y), (cx, y + dash_len), 3)
+        line_color = (30, 41, 59)
+        for y in range(25, self.height - 25, dash_len + gap_len):
+            pygame.draw.line(surface, line_color, (cx, y), (cx, y + dash_len), 2)
 
-        pygame.draw.circle(surface, (0, 180, 255), (cx, self.height // 2), 60, width=2)
-        pygame.draw.circle(surface, (0, 245, 255), (cx, self.height // 2), 6, width=0)
+        pygame.draw.circle(surface, line_color, (cx, self.height // 2), 55, width=1)
+        pygame.draw.circle(surface, (51, 65, 85), (cx, self.height // 2), 4, width=0)
 
     def draw_hud(self, surface, score1, score2, p1_name, p2_name, rally_count, ball_speed, powerups_enabled, muted):
         self.draw_center_court(surface)
 
-        s1_surf = self.score_font.render(str(score1), True, (0, 245, 255))
-        s2_surf = self.score_font.render(str(score2), True, (255, 0, 128))
+        s1_surf = self.score_font.render(str(score1), True, (56, 189, 248))
+        s2_surf = self.score_font.render(str(score2), True, (244, 63, 94))
         
-        surface.blit(s1_surf, (self.width // 4 - s1_surf.get_width() // 2, 25))
-        surface.blit(s2_surf, (3 * self.width // 4 - s2_surf.get_width() // 2, 25))
+        surface.blit(s1_surf, (self.width // 4 - s1_surf.get_width() // 2, 28))
+        surface.blit(s2_surf, (3 * self.width // 4 - s2_surf.get_width() // 2, 28))
 
-        p1_lbl = self.sub_font.render(p1_name, True, (0, 200, 255))
-        p2_lbl = self.sub_font.render(p2_name, True, (255, 60, 150))
-        surface.blit(p1_lbl, (self.width // 4 - p1_lbl.get_width() // 2, 5))
-        surface.blit(p2_lbl, (3 * self.width // 4 - p2_lbl.get_width() // 2, 5))
+        p1_lbl = self.sub_font.render(p1_name.upper(), True, (148, 163, 184))
+        p2_lbl = self.sub_font.render(p2_name.upper(), True, (148, 163, 184))
+        surface.blit(p1_lbl, (self.width // 4 - p1_lbl.get_width() // 2, 8))
+        surface.blit(p2_lbl, (3 * self.width // 4 - p2_lbl.get_width() // 2, 8))
 
-        stat_text = f"RALLY: {rally_count}   |   BALL SPEED: {int(ball_speed * 10)} KM/H   |   MUTE: {'YES' if muted else 'NO (M)'}"
-        stat_surf = self.hud_font.render(stat_text, True, (150, 180, 210))
-        surface.blit(stat_surf, (self.width // 2 - stat_surf.get_width() // 2, self.height - 25))
+        stat_text = f"RALLY: {rally_count}   |   AUDIO: {'MUTED (M)' if muted else 'ACTIVE (M)'}"
+        stat_surf = self.hud_font.render(stat_text, True, (100, 116, 139))
+        surface.blit(stat_surf, (self.width // 2 - stat_surf.get_width() // 2, self.height - 24))
 
     def draw_ready_overlay(self, surface, p1_ready, p2_ready, p1_is_local):
         overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
-        overlay.fill((5, 10, 20, 180))
+        overlay.fill((11, 15, 25, 200))
         surface.blit(overlay, (0, 0))
 
         cx = self.width // 2
         cy = self.height // 2 - 40
 
-        title_surf = self.title_font.render("WAITING FOR BOTH PLAYERS", True, (255, 215, 0))
+        title_surf = self.title_font.render("WAITING FOR PLAYERS", True, (241, 245, 249))
         surface.blit(title_surf, title_surf.get_rect(center=(cx, cy - 60)))
 
-        # Badges
-        b1_col = (0, 230, 120) if p1_ready else (140, 150, 170)
-        b2_col = (0, 230, 120) if p2_ready else (140, 150, 170)
+        b1_col = (52, 211, 153) if p1_ready else (148, 163, 184)
+        b2_col = (52, 211, 153) if p2_ready else (148, 163, 184)
         
-        b1_txt = "PLAYER 1: READY ✅" if p1_ready else "PLAYER 1: NOT READY ⏳"
-        b2_txt = "PLAYER 2: READY ✅" if p2_ready else "PLAYER 2: NOT READY ⏳"
+        b1_txt = "PLAYER 1: READY" if p1_ready else "PLAYER 1: NOT READY"
+        b2_txt = "PLAYER 2: READY" if p2_ready else "PLAYER 2: NOT READY"
 
         p1_surf = self.sub_font.render(b1_txt, True, b1_col)
         p2_surf = self.sub_font.render(b2_txt, True, b2_col)
@@ -216,32 +213,32 @@ class UIRenderer:
         surface.blit(p2_surf, (cx + 30, cy))
 
         local_ready = p1_ready if p1_is_local else p2_ready
-        hint_text = "Press [SPACE] or click READY button below!" if not local_ready else "Waiting for other player to press READY..."
-        hint_surf = self.btn_font.render(hint_text, True, (0, 245, 255))
+        hint_text = "Press SPACE or click READY to begin" if not local_ready else "Waiting for opponent to click READY..."
+        hint_surf = self.btn_font.render(hint_text, True, (56, 189, 248))
         surface.blit(hint_surf, hint_surf.get_rect(center=(cx, cy + 50)))
 
     def draw_pause_overlay(self, surface):
         overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
-        overlay.fill((5, 10, 20, 200))
+        overlay.fill((11, 15, 25, 210))
         surface.blit(overlay, (0, 0))
 
-        title_surf = self.title_font.render("GAME PAUSED", True, (0, 245, 255))
+        title_surf = self.title_font.render("GAME PAUSED", True, (241, 245, 249))
         t_rect = title_surf.get_rect(center=(self.width // 2, self.height // 3))
         surface.blit(title_surf, t_rect)
 
-        sub_surf = self.sub_font.render("Press ESC or P to Resume", True, (200, 220, 240))
-        s_rect = sub_surf.get_rect(center=(self.width // 2, self.height // 3 + 60))
+        sub_surf = self.sub_font.render("Press ESC or P to Resume", True, (148, 163, 184))
+        s_rect = sub_surf.get_rect(center=(self.width // 2, self.height // 3 + 55))
         surface.blit(sub_surf, s_rect)
 
     def draw_game_over(self, surface, winner_text):
         overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
-        overlay.fill((5, 10, 20, 220))
+        overlay.fill((11, 15, 25, 220))
         surface.blit(overlay, (0, 0))
 
-        title_surf = self.title_font.render("VICTORY!", True, (255, 215, 0))
+        title_surf = self.title_font.render("MATCH COMPLETE", True, (241, 245, 249))
         t_rect = title_surf.get_rect(center=(self.width // 2, self.height // 3 - 20))
         surface.blit(title_surf, t_rect)
 
-        w_surf = self.sub_font.render(winner_text, True, (0, 245, 255))
-        w_rect = w_surf.get_rect(center=(self.width // 2, self.height // 3 + 50))
+        w_surf = self.sub_font.render(winner_text.upper(), True, (56, 189, 248))
+        w_rect = w_surf.get_rect(center=(self.width // 2, self.height // 3 + 45))
         surface.blit(w_surf, w_rect)
