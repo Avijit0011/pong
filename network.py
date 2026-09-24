@@ -63,6 +63,7 @@ class NetworkServer:
                 self.client_socket = client
                 self.client_addr = addr
                 self.is_connected = True
+                self.client_socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 self.client_socket.setblocking(False)
                 
                 recv_thread = threading.Thread(target=self._recv_loop, daemon=True)
@@ -151,6 +152,7 @@ class NetworkClient:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(3.0)
             self.socket.connect((host, port))
+            self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
             self.socket.setblocking(False)
             self.is_connected = True
             self.is_running = True
