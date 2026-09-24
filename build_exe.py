@@ -4,7 +4,7 @@ import subprocess
 
 def build_executable():
     print("=" * 60)
-    print(" NEON PONG 2D - STANDALONE EXECUTABLE (.EXE) BUILDER")
+    print(" PONG 2D - STANDALONE EXECUTABLE (.EXE) BUILDER")
     print("=" * 60)
     
     # Ensure pyinstaller is installed
@@ -24,7 +24,7 @@ def build_executable():
         "PyInstaller",
         "--noconsole",
         "--onefile",
-        "--name", "NeonPong2D",
+        "--name", "Pong2D",
         "--distpath", os.path.join(project_dir, "dist"),
         "--workpath", os.path.join(project_dir, "build"),
         "--specpath", project_dir,
@@ -36,12 +36,12 @@ def build_executable():
     
     res = subprocess.run(cmd)
     if res.returncode == 0:
-        exe_path = os.path.join(project_dir, "dist", "NeonPong2D.exe")
+        exe_path = os.path.join(project_dir, "dist", "Pong2D.exe")
         print("\n" + "=" * 60)
         print(" BUILD SUCCESSFUL!")
         print(f" Executable created at: {exe_path}")
         print("=" * 60)
-        print(" You can now send 'NeonPong2D.exe' to your friend to play online!")
+        print(" You can now launch 'Pong2D.exe' to play!")
     else:
         print("\n[ERROR] Build failed with exit code:", res.returncode)
 
