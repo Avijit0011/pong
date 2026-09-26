@@ -55,6 +55,10 @@ class Ball:
         self.x += self.vx
         self.y += self.vy
 
+        # Emit speed trail particles if ball moving fast
+        if particle_system and self.speed > 11.0:
+            particle_system.spawn_speed_trail(self.x, self.y, color=self.glow_color, count=1)
+
         # Wall collisions (Top and Bottom boundaries)
         top_bound = 15 + self.radius
         bottom_bound = arena_height - 15 - self.radius

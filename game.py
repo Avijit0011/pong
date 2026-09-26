@@ -530,9 +530,11 @@ class PongGame:
         if scorer == 1:
             self.paddle1.score += 1
             self.particle_sys.spawn_goal_explosion(self.width - 15, ball.y, color=(56, 189, 248), count=24)
+            self.particle_sys.spawn_shockwave(self.width - 15, ball.y, color=(56, 189, 248), max_radius=60)
         else:
             self.paddle2.score += 1
             self.particle_sys.spawn_goal_explosion(15, ball.y, color=(244, 63, 94), count=24)
+            self.particle_sys.spawn_shockwave(15, ball.y, color=(244, 63, 94), max_radius=60)
 
         self.sound.play('score')
         self.trigger_screen_shake(4, 10)

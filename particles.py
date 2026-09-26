@@ -12,6 +12,7 @@ class Particle:
         self.max_lifespan = lifespan
         self.lifespan = lifespan
         self.shape = shape
+        self.growth = 0.0
 
     def update(self):
         self.x += self.vx
@@ -19,18 +20,28 @@ class Particle:
         self.vx *= 0.96  # Drag
         self.vy *= 0.96
         self.lifespan -= 1
+        if self.shape == "ring":
+            self.size += self.growth
 
     def draw(self, surface):
         if self.lifespan <= 0:
             return
         
         alpha_ratio = max(0.0, self.lifespan / self.max_lifespan)
-        current_size = max(1, int(self.size * alpha_ratio))
-        
         r, g, b = self.color[:3]
         color_with_alpha = (r, g, b, int(220 * alpha_ratio))
         
-        # Crisp particle rendering
+        if self.shape == "ring":
+            cur_r = int(self.size)
+            if cur_r > 1:
+                surf_size = cur_r * 2 + 6
+                ring_surf = pygame.Surface((surf_size, surf_size), pygame.SRCALPHA)
+                center = (surf_size // 2, surf_size // 2)
+                pygame.draw.circle(ring_surf, color_with_alpha, center, cur_r, width=2)
+                surface.blit(ring_surf, (int(self.x) - surf_size // 2, int(self.y) - surf_size // 2))
+            return
+
+        current_size = max(1, int(self.size * alpha_ratio))
         surf_size = current_size * 2 + 2
         particle_surf = pygame.Surface((surf_size, surf_size), pygame.SRCALPHA)
         center = (surf_size // 2, surf_size // 2)
@@ -79,6 +90,19 @@ class ParticleSystem:
             lifespan = random.randint(12, 25)
             self.particles.append(Particle(x, y, vx, vy, color, size, lifespan))
 
+    def spawn_speed_trail(self, x, y, color=(56, 189, 248), count=2):
+        for _ in range(count):
+            vx = random.uniform(-0.8, 0.8)
+            vy = random.uniform(-0.8, 0.8)
+            size = random.uniform(1.5, 3.0)
+            lifespan = random.randint(8, 16)
+            self.particles.append(Particle(x, y, vx, vy, color, size, lifespan))
+
+    def spawn_shockwave(self, x, y, color=(244, 63, 94), max_radius=40):
+        p = Particle(x, y, 0, 0, color, 4, 20, shape="ring")
+        p.growth = max_radius / 20.0
+        self.particles.append(p)
+
 def math_cos(rad):
     import math
     return math.cos(rad)
@@ -86,4 +110,5 @@ def math_cos(rad):
 def math_sin(rad):
     import math
     return math.sin(rad)
+
 
