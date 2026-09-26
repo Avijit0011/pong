@@ -6,7 +6,8 @@ POWERUP_TYPES = {
     "SPEED": {"color": (239, 68, 68), "glow": (239, 68, 68), "label": "S"},
     "SHIELD": {"color": (16, 185, 129), "glow": (16, 185, 129), "label": "W"},
     "EXTEND": {"color": (245, 158, 11), "glow": (245, 158, 11), "label": "E"},
-    "MULTIBALL": {"color": (99, 102, 241), "glow": (99, 102, 241), "label": "M"}
+    "MULTIBALL": {"color": (99, 102, 241), "glow": (99, 102, 241), "label": "M"},
+    "SLOW_MO": {"color": (6, 182, 212), "glow": (6, 182, 212), "label": "T"}
 }
 
 class PowerUp:
@@ -100,6 +101,10 @@ class PowerUpManager:
                         ball.speed = min(ball.max_speed, ball.speed * 1.5)
                         ball.vx *= 1.3
                         ball.vy *= 1.3
+                    elif p.type == "SLOW_MO":
+                        ball.speed = max(4.5, ball.speed * 0.6)
+                        ball.vx *= 0.6
+                        ball.vy *= 0.6
                     else:
                         beneficiary.apply_powerup(p.type)
                         
