@@ -127,7 +127,10 @@ class Ball:
                 self.x = paddle_rect.left - self.radius - 1
                 
             if sound_engine:
-                sound_engine.play('paddle_hit')
+                if self.rally_count > 0 and self.rally_count % 5 == 0:
+                    sound_engine.play('rally_milestone')
+                else:
+                    sound_engine.play('paddle_hit')
             if particle_system:
                 sparks_color = paddle.color
                 particle_system.spawn_impact_sparks(self.x, self.y, direction, color=sparks_color, count=8)

@@ -72,6 +72,12 @@ class SoundEngine:
             
             # Victory sound
             self.sounds['victory'] = self._create_arpeggio([440.0, 554.37, 659.25, 880.0], 0.12, volume=0.35)
+
+            # Power-up spawn notification sound
+            self.sounds['powerup_spawn'] = self._create_arpeggio([392.00, 523.25], 0.08, volume=0.25)
+
+            # High rally milestone sound
+            self.sounds['rally_milestone'] = self._create_arpeggio([783.99, 1046.50, 1318.51], 0.06, volume=0.35)
         except Exception as e:
             print(f"[SoundEngine] Error generating synth sounds: {e}")
 

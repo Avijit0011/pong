@@ -76,6 +76,8 @@ class PowerUpManager:
             spawn_y = random.randint(80, arena_height - 80)
             p_type = random.choice(list(POWERUP_TYPES.keys()))
             self.powerups.append(PowerUp(spawn_x, spawn_y, p_type))
+            if sound_engine:
+                sound_engine.play('powerup_spawn')
 
         # Update powerups and check ball collision
         for p in self.powerups[:]:
