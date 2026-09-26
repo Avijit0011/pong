@@ -605,7 +605,13 @@ class PongGame:
                 self.btn_pause_menu.draw(render_surf)
                 self.btn_pause_quit.draw(render_surf)
             elif self.state == "GAME_OVER":
-                self.ui.draw_game_over(render_surf, self.winner_text)
+                stats = {
+                    "p1_score": self.paddle1.score,
+                    "p2_score": self.paddle2.score,
+                    "max_rally": max_rally,
+                    "max_speed": max_speed
+                }
+                self.ui.draw_game_over(render_surf, self.winner_text, stats=stats)
                 self.btn_restart.draw(render_surf)
                 self.btn_go_menu.draw(render_surf)
                 self.btn_go_quit.draw(render_surf)

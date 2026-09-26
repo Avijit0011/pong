@@ -281,15 +281,33 @@ class UIRenderer:
         s_rect = sub_surf.get_rect(center=(self.width // 2, self.height // 3 + 55))
         surface.blit(sub_surf, s_rect)
 
-    def draw_game_over(self, surface, winner_text):
+    def draw_game_over(self, surface, winner_text, stats=None):
         overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
         overlay.fill((11, 15, 25, 220))
         surface.blit(overlay, (0, 0))
 
+        cx = self.width // 2
+
         title_surf = self.title_font.render("MATCH COMPLETE", True, (241, 245, 249))
-        t_rect = title_surf.get_rect(center=(self.width // 2, self.height // 3 - 20))
+        t_rect = title_surf.get_rect(center=(cx, 110))
         surface.blit(title_surf, t_rect)
 
         w_surf = self.sub_font.render(winner_text.upper(), True, (56, 189, 248))
-        w_rect = w_surf.get_rect(center=(self.width // 2, self.height // 3 + 45))
+        w_rect = w_surf.get_rect(center=(cx, 160))
         surface.blit(w_surf, w_rect)
+
+        if stats:
+            card_w, card_h = 360, 105
+            card_x, card_y = cx - card_w // 2, 195
+            card_surf = pygame.Surface((card_w, card_h), pygame.SRCALPHA)
+            card_surf.fill((30, 41, 59, 180))
+            pygame.draw.rect(card_surf, (56, 189, 248), (0, 0, card_w, card_h), width=1, border_radius=8)
+            surface.blit(card_surf, (card_x, card_y))
+
+            s1 = self.btn_font.render(f"FINAL SCORE:  P1 [{stats.get('p1_score', 0)}] - [{stats.get('p2_score', 0)}] P2", True, (241, 245, 249))
+            s2 = self.hud_font.render(f"LONGEST RALLY RECORD:  {stats.get('max_rally', 0)} HITS", True, (148, 163, 184))
+            s3 = self.hud_font.render(f"PEAK BALL VELOCITY:  {stats.get('max_speed', 0.0):.1f} PX/F", True, (148, 163, 184))
+
+            surface.blit(s1, s1.get_rect(center=(cx, card_y + 28)))
+            surface.blit(s2, s2.get_rect(center=(cx, card_y + 58)))
+            surface.blit(s3, s3.get_rect(center=(cx, card_y + 82)))
