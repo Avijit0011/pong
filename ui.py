@@ -297,7 +297,7 @@ class UIRenderer:
         surface.blit(w_surf, w_rect)
 
         if stats:
-            card_w, card_h = 360, 105
+            card_w, card_h = 360, 125
             card_x, card_y = cx - card_w // 2, 195
             card_surf = pygame.Surface((card_w, card_h), pygame.SRCALPHA)
             card_surf.fill((30, 41, 59, 180))
@@ -305,9 +305,11 @@ class UIRenderer:
             surface.blit(card_surf, (card_x, card_y))
 
             s1 = self.btn_font.render(f"FINAL SCORE:  P1 [{stats.get('p1_score', 0)}] - [{stats.get('p2_score', 0)}] P2", True, (241, 245, 249))
-            s2 = self.hud_font.render(f"LONGEST RALLY RECORD:  {stats.get('max_rally', 0)} HITS", True, (148, 163, 184))
-            s3 = self.hud_font.render(f"PEAK BALL VELOCITY:  {stats.get('max_speed', 0.0):.1f} PX/F", True, (148, 163, 184))
+            s2 = self.hud_font.render(f"LONGEST RALLY THIS MATCH:  {stats.get('max_rally', 0)} HITS", True, (148, 163, 184))
+            s3 = self.hud_font.render(f"ALL-TIME RECORD RALLY:  {stats.get('all_time_rally', 0)} HITS", True, (245, 158, 11))
+            s4 = self.hud_font.render(f"PEAK BALL VELOCITY:  {stats.get('max_speed', 0.0):.1f} PX/F", True, (148, 163, 184))
 
-            surface.blit(s1, s1.get_rect(center=(cx, card_y + 28)))
-            surface.blit(s2, s2.get_rect(center=(cx, card_y + 58)))
-            surface.blit(s3, s3.get_rect(center=(cx, card_y + 82)))
+            surface.blit(s1, s1.get_rect(center=(cx, card_y + 24)))
+            surface.blit(s2, s2.get_rect(center=(cx, card_y + 54)))
+            surface.blit(s3, s3.get_rect(center=(cx, card_y + 76)))
+            surface.blit(s4, s4.get_rect(center=(cx, card_y + 98)))

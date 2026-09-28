@@ -1,3 +1,5 @@
+import os
+import json
 import random
 import pygame
 from paddle import Paddle
@@ -57,8 +59,28 @@ class PongGame:
         # Outgoing chat queues
         self.pending_outgoing_chat = []
         
+        # Persistent stats
+        self.stats_file = "high_scores.json"
+        self.persistent_stats = self._load_stats()
+
         # Initialize Menu Buttons
         self._init_menu_buttons()
+
+    def _load_stats(self):
+        try:
+            if os.path.exists(self.stats_file):
+                with open(self.stats_file, "r") as f:
+                    return json.load(f)
+        except Exception:
+            pass
+        return {"all_time_rally": 0}
+
+    def _save_stats(self):
+        try:
+            with open(self.stats_file, "w") as f:
+                json.dump(self.persistent_stats, f)
+        except Exception:
+            pass
 
     def _init_menu_buttons(self):
         cx = self.width // 2
@@ -590,6 +612,10 @@ class PongGame:
             max_rally = max([b.rally_count for b in self.balls]) if self.balls else 0
             max_speed = max([b.speed for b in self.balls]) if self.balls else 9.0
             
+            if max_rally > self.persistent_stats.get("all_time_rally", 0):
+                self.persistent_stats["all_time_rally"] = max_rally
+                self._save_stats()
+            
             self.ui.draw_hud(render_surf, self.paddle1.score, self.paddle2.score, "PLAYER 1", p2_name, max_rally, max_speed, self.powerups_enabled, self.sound.muted, self.sound.master_volume)
             
             self.powerup_mgr.draw(render_surf, self.ui.hud_font)
@@ -621,7 +647,8 @@ class PongGame:
                     "p1_score": self.paddle1.score,
                     "p2_score": self.paddle2.score,
                     "max_rally": max_rally,
-                    "max_speed": max_speed
+                    "max_speed": max_speed,
+                    "all_time_rally": self.persistent_stats.get("all_time_rally", 0)
                 }
                 self.ui.draw_game_over(render_surf, self.winner_text, stats=stats)
                 self.btn_restart.draw(render_surf)
