@@ -6,6 +6,7 @@ class SoundEngine:
     def __init__(self):
         self.enabled = False
         self.muted = False
+        self.master_volume = 1.0
         self.sounds = {}
         
         try:
@@ -85,8 +86,18 @@ class SoundEngine:
         if not self.enabled or self.muted:
             return
         if sound_name in self.sounds:
-            self.sounds[sound_name].play()
+            sound = self.sounds[sound_name]
+            sound.set_volume(self.master_volume)
+            sound.play()
 
     def toggle_mute(self):
         self.muted = not self.muted
         return self.muted
+
+    def increase_volume(self, amount=0.1):
+        self.master_volume = min(1.0, self.master_volume + amount)
+        return self.master_volume
+
+    def decrease_volume(self, amount=0.1):
+        self.master_volume = max(0.0, self.master_volume - amount)
+        return self.master_volume

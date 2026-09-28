@@ -69,9 +69,10 @@ class PongGame:
         self.btn_diff = Button(cx - btn_w // 2, 245, btn_w, btn_h, f"AI DIFFICULTY: {self.ai_difficulty.upper()}", self.ui.btn_font)
         self.btn_score = Button(cx - btn_w // 2, 295, btn_w, btn_h, f"TARGET SCORE: {self.target_score}", self.ui.btn_font)
         self.btn_power = Button(cx - btn_w // 2, 345, btn_w, btn_h, "POWER-UPS: ON", self.ui.btn_font)
+        self.btn_vol = Button(cx - btn_w // 2, 395, btn_w, btn_h, f"VOLUME: {int(self.sound.master_volume * 100)}%", self.ui.btn_font)
         
-        self.btn_start = Button(cx - btn_w // 2, 405, btn_w, 44, "START MATCH", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
-        self.btn_quit = Button(cx - btn_w // 2, 459, btn_w, 42, "QUIT", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(244, 63, 94))
+        self.btn_start = Button(cx - btn_w // 2, 455, btn_w, 44, "START MATCH", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
+        self.btn_quit = Button(cx - btn_w // 2, 509, btn_w, 42, "QUIT", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(244, 63, 94))
         
         # Lobby buttons
         self.btn_connect = Button(cx - 110, 305, 220, 42, "CONNECT", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
@@ -198,6 +199,16 @@ class PongGame:
                     self.powerups_enabled = not self.powerups_enabled
                     self.btn_power.text = f"POWER-UPS: {'ON' if self.powerups_enabled else 'OFF'}"
 
+                elif self.btn_vol.check_hover(mouse_pos):
+                    vol = int(self.sound.master_volume * 100)
+                    if vol >= 100: vol = 75
+                    elif vol >= 75: vol = 50
+                    elif vol >= 50: vol = 25
+                    elif vol >= 25: vol = 0
+                    else: vol = 100
+                    self.sound.master_volume = vol / 100.0
+                    self.btn_vol.text = f"VOLUME: {vol}%"
+
                 elif self.btn_start.check_hover(mouse_pos):
                     if self.mode in ["VS_AI", "TWO_PLAYER"]:
                         self.reset_match()
@@ -308,6 +319,7 @@ class PongGame:
             self.btn_diff.check_hover(mouse_pos)
             self.btn_score.check_hover(mouse_pos)
             self.btn_power.check_hover(mouse_pos)
+            self.btn_vol.check_hover(mouse_pos)
             self.btn_start.check_hover(mouse_pos)
             self.btn_quit.check_hover(mouse_pos)
             return
@@ -578,7 +590,7 @@ class PongGame:
             max_rally = max([b.rally_count for b in self.balls]) if self.balls else 0
             max_speed = max([b.speed for b in self.balls]) if self.balls else 9.0
             
-            self.ui.draw_hud(render_surf, self.paddle1.score, self.paddle2.score, "PLAYER 1", p2_name, max_rally, max_speed, self.powerups_enabled, self.sound.muted)
+            self.ui.draw_hud(render_surf, self.paddle1.score, self.paddle2.score, "PLAYER 1", p2_name, max_rally, max_speed, self.powerups_enabled, self.sound.muted, self.sound.master_volume)
             
             self.powerup_mgr.draw(render_surf, self.ui.hud_font)
             

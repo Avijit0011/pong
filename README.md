@@ -80,6 +80,7 @@ A sleek, high-performance **Minimalist 2D Arcade Pong game** built in **Python**
 | **Player 1 (Left Paddle)** | `W` (Move Up) / `S` (Move Down) |
 | **Player 2 (Right Paddle)** | `Up Arrow` (Move Up) / `Down Arrow` (Move Down) |
 | **Pause / Resume** | `ESC` or `P` |
+| **Adjust Volume** | Click `VOLUME` in Main Menu |
 | **Mute / Unmute Sound** | `M` |
 | **Quick Restart Match** | `R` |
 

@@ -209,7 +209,7 @@ class UIRenderer:
         pygame.draw.circle(surface, line_color, (cx, self.height // 2), 55, width=1)
         pygame.draw.circle(surface, (51, 65, 85), (cx, self.height // 2), 4, width=0)
 
-    def draw_hud(self, surface, score1, score2, p1_name, p2_name, rally_count, ball_speed, powerups_enabled, muted):
+    def draw_hud(self, surface, score1, score2, p1_name, p2_name, rally_count, ball_speed, powerups_enabled, muted, volume=1.0):
         self.draw_center_court(surface)
 
         self.score1_pop *= 0.88
@@ -236,7 +236,7 @@ class UIRenderer:
         surface.blit(p1_lbl, (self.width // 4 - p1_lbl.get_width() // 2, 8))
         surface.blit(p2_lbl, (3 * self.width // 4 - p2_lbl.get_width() // 2, 8))
 
-        stat_text = f"RALLY: {rally_count}   |   AUDIO: {'MUTED (M)' if muted else 'ACTIVE (M)'}"
+        stat_text = f"RALLY: {rally_count}   |   AUDIO: {'MUTED (M)' if muted else f'VOL {int(volume * 100)}% (M)'}"
         stat_surf = self.hud_font.render(stat_text, True, (100, 116, 139))
         surface.blit(stat_surf, (self.width // 2 - stat_surf.get_width() // 2, self.height - 24))
 
