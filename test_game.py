@@ -111,6 +111,43 @@ class TestPowerUpSystem(unittest.TestCase):
         mgr.update(1000, 600, [ball], p1, p2, sound, particles, lambda x, y, vx, vy: None)
         self.assertLess(ball.speed, 10.0)
 
+    def test_shield_effect(self):
+        mgr = PowerUpManager()
+        sound = SoundEngine()
+        particles = ParticleSystem()
+        p = PowerUp(500, 300, "SHIELD")
+        mgr.powerups.append(p)
+
+        ball = Ball(500, 300)
+        ball.vx = 8.0
+        ball.vy = 0.0
+        p1 = Paddle(40, 300)
+        p2 = Paddle(960, 300)
+
+        # Apply SHIELD to p1
+        mgr.update(1000, 600, [ball], p1, p2, sound, particles, lambda x, y, vx, vy: None)
+        self.assertTrue(p1.has_shield)
+        self.assertFalse(p2.has_shield)
+
+    def test_multiball_effect(self):
+        mgr = PowerUpManager()
+        sound = SoundEngine()
+        particles = ParticleSystem()
+        p = PowerUp(500, 300, "MULTIBALL")
+        mgr.powerups.append(p)
+
+        balls = [Ball(500, 300)]
+        balls[0].vx = 8.0
+        p1 = Paddle(40, 300)
+        p2 = Paddle(960, 300)
+
+        def mock_extra_ball(x, y, vx, vy):
+            balls.append(Ball(x, y))
+
+        mgr.update(1000, 600, balls, p1, p2, sound, particles, mock_extra_ball)
+        self.assertEqual(len(balls), 2)
+
+
 
 class TestGameEngine(unittest.TestCase):
     def setUp(self):
