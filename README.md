@@ -28,7 +28,7 @@ A sleek, high-performance **Minimalist 2D Arcade Pong game** built in **Python**
   - **Paddle Extend (`E`)**: Enlarges paddle height by 50% for improved defense.
   - **Multi-Ball (`M`)**: Spawns an additional active ball into play.
   - **Slow-Mo (`T`)**: Temporal warp that reduces ball speed by 40% for strategic precision.
-- ✨ **Dynamic Visual & Particle FX**: Tapered motion trails, high-speed particle sparks, expanding shockwave rings on goal explosion, and camera screen shake.
+- ✨ **Clean Visuals**: Smooth 60fps rendering with minimalist paddle and ball designs.
 - 🎵 **Procedural Audio Synthesizer**: Self-contained sound engine generating retro audio waveforms directly in memory — zero external media asset dependencies required!
 - 📊 **Post-Match Statistics Dashboard**: Comprehensive game-over summary card displaying final score breakdown, longest rally record, and peak ball velocity.
 - 🧪 **Automated Test Suite**: Full `pytest` / `unittest` coverage validating ball reflection physics, paddle boundaries, powerups, AI logic, and state management.
