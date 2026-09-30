@@ -155,13 +155,6 @@ class Paddle:
     def draw(self, surface):
         rect = self.get_rect()
         
-        # Subtle ambient halo around paddle
-        glow_size = 6
-        glow_surf = pygame.Surface((rect.width + glow_size * 2, rect.height + glow_size * 2), pygame.SRCALPHA)
-        glow_color_alpha = (self.glow_color[0], self.glow_color[1], self.glow_color[2], int(35 + 40 * self.hit_flash))
-        pygame.draw.rect(glow_surf, glow_color_alpha, (0, 0, rect.width + glow_size * 2, rect.height + glow_size * 2), border_radius=6)
-        surface.blit(glow_surf, (rect.x - glow_size, rect.y - glow_size))
-        
         # Flash color blend
         r = int(self.color[0] + (255 - self.color[0]) * self.hit_flash * 0.6)
         g = int(self.color[1] + (255 - self.color[1]) * self.hit_flash * 0.6)

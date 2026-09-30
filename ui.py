@@ -19,11 +19,8 @@ class Button:
         bg_col = self.hover_color if self.is_hovered else self.color
         border_col = (56, 189, 248) if self.is_hovered else (71, 85, 105)
         
-        # Subtle ambient border shadow if hovered
-        if self.is_hovered:
-            glow_surf = pygame.Surface((self.rect.width + 8, self.rect.height + 8), pygame.SRCALPHA)
-            pygame.draw.rect(glow_surf, (56, 189, 248, 30), (0, 0, self.rect.width + 8, self.rect.height + 8), border_radius=8)
-            surface.blit(glow_surf, (self.rect.x - 4, self.rect.y - 4))
+        # Removed ambient border shadow
+
 
         # Main button body
         pygame.draw.rect(surface, bg_col, self.rect, border_radius=6)
@@ -153,18 +150,9 @@ class UIRenderer:
         self.hud_font = pygame.font.SysFont("Segoe UI", 14) or pygame.font.SysFont("Arial", 14) or pygame.font.Font(None, 16)
         self.btn_font = pygame.font.SysFont("Segoe UI", 16, bold=True) or pygame.font.SysFont("Arial", 16, bold=True) or pygame.font.Font(None, 18)
 
-        # Pre-render subtle radial vignette background surface for extra depth
+        # Simple solid background
         self.bg_surf = pygame.Surface((width, height))
         self.bg_surf.fill((11, 15, 25))
-        cx, cy = width // 2, height // 2
-        max_r = int((cx**2 + cy**2)**0.5)
-        
-        # Radial gradient overlay steps
-        vignette = pygame.Surface((width, height), pygame.SRCALPHA)
-        for r in range(max_r, 0, -35):
-            alpha = int(45 * (r / max_r)**1.5)
-            pygame.draw.circle(vignette, (5, 8, 15, alpha), (cx, cy), r)
-        self.bg_surf.blit(vignette, (0, 0))
 
         self.score1_pop = 0.0
         self.score2_pop = 0.0
@@ -215,18 +203,8 @@ class UIRenderer:
         self.score1_pop *= 0.88
         self.score2_pop *= 0.88
 
-        s1_surf = self.score_font.render(str(score1), True, (56, 189, 248))
-        s2_surf = self.score_font.render(str(score2), True, (244, 63, 94))
-        
-        if self.score1_pop > 0.05:
-            scale = 1.0 + 0.3 * self.score1_pop
-            nw, nh = int(s1_surf.get_width() * scale), int(s1_surf.get_height() * scale)
-            s1_surf = pygame.transform.smoothscale(s1_surf, (max(1, nw), max(1, nh)))
-            
-        if self.score2_pop > 0.05:
-            scale = 1.0 + 0.3 * self.score2_pop
-            nw, nh = int(s2_surf.get_width() * scale), int(s2_surf.get_height() * scale)
-            s2_surf = pygame.transform.smoothscale(s2_surf, (max(1, nw), max(1, nh)))
+        s1_surf = self.score_font.render(str(score1), True, (241, 245, 249))
+        s2_surf = self.score_font.render(str(score2), True, (241, 245, 249))
 
         surface.blit(s1_surf, (self.width // 4 - s1_surf.get_width() // 2, 28 - (s1_surf.get_height() - 56) // 2))
         surface.blit(s2_surf, (3 * self.width // 4 - s2_surf.get_width() // 2, 28 - (s2_surf.get_height() - 56) // 2))

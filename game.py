@@ -38,8 +38,8 @@ class PongGame:
         self.status_color = (0, 245, 255)
         
         # Entities
-        self.paddle1 = Paddle(40, height // 2, is_ai=False, color=(56, 189, 248), glow_color=(56, 189, 248))
-        self.paddle2 = Paddle(width - 40, height // 2, is_ai=True, color=(244, 63, 94), glow_color=(244, 63, 94))
+        self.paddle1 = Paddle(40, height // 2, is_ai=False, color=(241, 245, 249), glow_color=(241, 245, 249))
+        self.paddle2 = Paddle(width - 40, height // 2, is_ai=True, color=(241, 245, 249), glow_color=(241, 245, 249))
         self.paddle2.ai_difficulty = self.ai_difficulty
         
         self.balls = [Ball(width // 2, height // 2)]
@@ -563,15 +563,10 @@ class PongGame:
         self.ui.trigger_score_pop(scorer)
         if scorer == 1:
             self.paddle1.score += 1
-            self.particle_sys.spawn_goal_explosion(self.width - 15, ball.y, color=(56, 189, 248), count=24)
-            self.particle_sys.spawn_shockwave(self.width - 15, ball.y, color=(56, 189, 248), max_radius=60)
         else:
             self.paddle2.score += 1
-            self.particle_sys.spawn_goal_explosion(15, ball.y, color=(244, 63, 94), count=24)
-            self.particle_sys.spawn_shockwave(15, ball.y, color=(244, 63, 94), max_radius=60)
 
         self.sound.play('score')
-        self.trigger_screen_shake(4, 10)
 
         if self.paddle1.score >= self.target_score:
             self.winner_text = "PLAYER 1 WINS!"

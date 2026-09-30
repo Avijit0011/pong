@@ -139,23 +139,6 @@ class Ball:
         return False
 
     def draw(self, surface):
-        # Draw smooth tapered trail
-        for idx, (tx, ty) in enumerate(self.trail):
-            ratio = 1.0 - (idx / len(self.trail))
-            t_radius = max(2, int(self.radius * ratio * 0.75))
-            alpha = int(100 * ratio)
-            
-            trail_surf = pygame.Surface((t_radius * 2, t_radius * 2), pygame.SRCALPHA)
-            t_color = (self.glow_color[0], self.glow_color[1], self.glow_color[2], alpha)
-            pygame.draw.circle(trail_surf, t_color, (t_radius, t_radius), t_radius)
-            surface.blit(trail_surf, (tx - t_radius, ty - t_radius))
-
-        # Soft subtle ambient halo
-        glow_r = self.radius + 5
-        glow_surf = pygame.Surface((glow_r * 2, glow_r * 2), pygame.SRCALPHA)
-        pygame.draw.circle(glow_surf, (255, 255, 255, 30), (glow_r, glow_r), glow_r)
-        surface.blit(glow_surf, (self.x - glow_r, self.y - glow_r))
-
         # Main clean solid ball with squash & stretch
         rx = max(3, int(self.radius * self.squash_x))
         ry = max(3, int(self.radius * self.squash_y))
