@@ -7,6 +7,9 @@ def main():
     # Pre-trigger Windows Defender Firewall access prompt on OS startup
     trigger_firewall_prompt()
 
+    import os
+    os.environ['SDL_VIDEO_CENTERED'] = '1'
+
     # Initialize Pygame core modules
     pygame.init()
     pygame.font.init()
