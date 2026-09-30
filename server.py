@@ -6,7 +6,7 @@ from network import NetworkServer, get_local_ip
 def run_dedicated_server(port=5555):
     local_ip = get_local_ip()
     print("=" * 60)
-    print(" NEON PONG 2D - DEDICATED GAME SERVER")
+    print(" NEON PONG 2D - MULTIPLAYER GAME SERVER")
     print("=" * 60)
     print(f" Local LAN IP:   {local_ip}")
     print(f" Port:           {port}")
