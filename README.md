@@ -1,4 +1,4 @@
-# 🎮 Pong 2D
+# 🎮 Pong 2D Game
 
 A sleek, high-performance **Minimalist 2D Arcade Pong game** built in **Python** using **Pygame** — complete with **Online TCP Socket Multiplayer**, **Both-Side Ready System**, **In-Game Chat**, **Dynamic Particle Effects**, **Procedural Synth Audio**, **Match Statistics Dashboard**, **Automated Test Suite**, and a **Standalone Executable (.EXE) Builder**!
 
