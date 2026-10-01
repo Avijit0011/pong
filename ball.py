@@ -3,6 +3,10 @@ import random
 import pygame
 
 class Ball:
+    """
+    Represents the ball object in the game. Handles physics, bouncing, 
+    squash and stretch animation, and trail rendering.
+    """
     def __init__(self, x, y, radius=9, color=(241, 245, 249), glow_color=(148, 163, 184)):
         self.start_x = x
         self.start_y = y
