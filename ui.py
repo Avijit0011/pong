@@ -2,6 +2,10 @@ import pygame
 import time
 
 class Button:
+    """
+    Interactive UI button component that handles hover states, 
+    rendering, and click detection.
+    """
     def __init__(self, x, y, width, height, text, font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(241, 245, 249)):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
