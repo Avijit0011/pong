@@ -1,9 +1,17 @@
+"""
+Pong 2D Entry Point
+
+This module serves as the primary entry point for the Pong 2D game.
+It handles window initialization, event pumping, and the main game loop.
+"""
+
 import sys
 import pygame
 from game import PongGame
 from network import trigger_firewall_prompt
 
 def main():
+    """Initialize the game engine and run the main game loop."""
     # Pre-trigger Windows Defender Firewall access prompt on OS startup
     trigger_firewall_prompt()
 
