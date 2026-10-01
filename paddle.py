@@ -2,6 +2,10 @@ import random
 import pygame
 
 class Paddle:
+    """
+    Represents a player or AI controlled paddle in the game.
+    Handles movement, power-ups, and AI logic for tracking the ball.
+    """
     def __init__(self, x, y, width=14, height=95, is_ai=False, color=(56, 189, 248), glow_color=(56, 189, 248)):
         self.start_x = x
         self.start_y = y
