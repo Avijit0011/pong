@@ -11,6 +11,9 @@ POWERUP_TYPES = {
 }
 
 class PowerUp:
+    """
+    Represents an interactable power-up item that can affect gameplay.
+    """
     def __init__(self, x, y, p_type):
         self.x = x
         self.y = y
@@ -51,6 +54,9 @@ class PowerUp:
         surface.blit(txt_surf, txt_rect)
 
 class PowerUpManager:
+    """
+    Handles spawning, updating, and collision detection of power-ups.
+    """
     def __init__(self):
         self.powerups = []
         self.spawn_timer = 0

@@ -2,6 +2,9 @@ import random
 import pygame
 
 class Particle:
+    """
+    Represents a single particle used in visual effects.
+    """
     def __init__(self, x, y, vx, vy, color, size, lifespan, shape="circle"):
         self.x = x
         self.y = y
@@ -50,6 +53,9 @@ class Particle:
         surface.blit(particle_surf, (self.x - surf_size // 2, self.y - surf_size // 2))
 
 class ParticleSystem:
+    """
+    Manages generation, updating, and rendering of multiple particles.
+    """
     def __init__(self):
         self.particles = []
 

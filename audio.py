@@ -3,6 +3,9 @@ import struct
 import pygame
 
 class SoundEngine:
+    """
+    Handles audio playback, sound generation, and volume control.
+    """
     def __init__(self):
         self.enabled = False
         self.muted = False

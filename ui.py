@@ -37,6 +37,9 @@ class Button:
 
 
 class InputBox:
+    """
+    UI component for capturing text input from the user.
+    """
     def __init__(self, x, y, width, height, font, text='127.0.0.1'):
         self.rect = pygame.Rect(x, y, width, height)
         self.font = font
@@ -66,6 +69,9 @@ class InputBox:
 
 
 class ChatSystem:
+    """
+    UI component for managing and displaying in-game chat messages.
+    """
     def __init__(self, font):
         self.font = font
         self.messages = []  # list of {"sender": "P1", "text": "...", "time": timestamp, "color": tuple}
@@ -143,6 +149,9 @@ class ChatSystem:
 
 
 class UIRenderer:
+    """
+    Handles drawing menus, HUD elements, and overall UI state visualization.
+    """
     def __init__(self, width, height):
         self.width = width
         self.height = height

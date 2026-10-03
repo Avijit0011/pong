@@ -11,6 +11,10 @@ from ui import UIRenderer, Button, InputBox, ChatSystem
 from network import NetworkServer, NetworkClient, get_local_ip
 
 class PongGame:
+    """
+    Main game engine class that handles game state, rendering,
+    input processing, and game loop orchestration.
+    """
     def __init__(self, width=1000, height=600):
         self.width = width
         self.height = height

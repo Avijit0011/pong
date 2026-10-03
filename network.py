@@ -30,6 +30,9 @@ def trigger_firewall_prompt():
         pass
 
 class NetworkServer:
+    """
+    Server class for handling multiplayer connections and broadcasting game state.
+    """
     def __init__(self, port=DEFAULT_PORT):
         self.port = port
         self.server_socket = None
@@ -139,6 +142,9 @@ class NetworkServer:
 
 
 class NetworkClient:
+    """
+    Client class for connecting to the server and transmitting player input.
+    """
     def __init__(self):
         self.socket = None
         self.is_connected = False
