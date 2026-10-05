@@ -40,11 +40,11 @@ A sleek, high-performance **Minimalist 2D Arcade Pong game** built in **Python**
 
 | Code | Power-Up Name | Color | Effect |
 | :---: | :--- | :--- | :--- |
-| **`S`** | **SPEED** | Red (`#EF4444`) | Multiplies ball speed by 1.5x for aggressive offense |
-| **`W`** | **SHIELD** | Emerald (`#10B981`) | Spawns a rear wall barrier that absorbs 1 goal |
-| **`E`** | **EXTEND** | Amber (`#F59E0B`) | Increases paddle height by 50% for 5 seconds |
-| **`M`** | **MULTIBALL** | Indigo (`#6366F1`) | Clones ball into active dual-ball play |
-| **`T`** | **SLOW-MO** | Cyan (`#06B6D4`) | Reduces ball velocity by 40% for temporal control |
+| **`S`** | **SPEED** | White | Multiplies ball speed by 1.5x for aggressive offense |
+| **`W`** | **SHIELD** | White | Spawns a rear wall barrier that absorbs 1 goal |
+| **`E`** | **EXTEND** | White | Increases paddle height by 50% for 5 seconds |
+| **`M`** | **MULTIBALL** | White | Clones ball into active dual-ball play |
+| **`T`** | **SLOW-MO** | White | Reduces ball velocity by 40% for temporal control |
 
 ---
 
