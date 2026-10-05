@@ -53,10 +53,6 @@ class PongGame:
         self.ui = UIRenderer(width, height)
         self.chat = ChatSystem(self.ui.hud_font)
         
-        # Screen Shake effect
-        self.shake_time = 0
-        self.shake_magnitude = 0
-        
         # Winner info
         self.winner_text = ""
         
@@ -118,8 +114,7 @@ class PongGame:
         self.btn_go_quit = Button(cx + 80, 330, 130, 44, "QUIT", self.ui.btn_font)
 
     def trigger_screen_shake(self, magnitude=3, duration=8):
-        self.shake_magnitude = magnitude
-        self.shake_time = duration
+        pass
 
     def reset_match(self):
         self.paddle1.reset()
@@ -141,8 +136,6 @@ class PongGame:
         self.powerup_mgr.reset()
         self.powerup_mgr.enabled = self.powerups_enabled
         self.particle_sys.particles.clear()
-        self.shake_time = 0
-        self.shake_magnitude = 0
         self.winner_text = ""
         self.state = "PLAYING"
 
@@ -283,8 +276,6 @@ class PongGame:
                 elif self.btn_go_menu.check_hover(mouse_pos):
                     self._cleanup_network()
                     self.state = "MENU"
-                    self.shake_time = 0
-                    self.shake_magnitude = 0
                     self.particle_sys.particles.clear()
                 elif self.btn_go_quit.check_hover(mouse_pos):
                     self._cleanup_network()
@@ -334,9 +325,6 @@ class PongGame:
             self.net_client = None
 
     def update(self):
-        if self.shake_time > 0:
-            self.shake_time -= 1
-
         mouse_pos = pygame.mouse.get_pos()
         
         if self.state == "MENU":
@@ -582,13 +570,6 @@ class PongGame:
 
     def draw(self, surface):
         render_surf = surface
-        shake_offset_x = 0
-        shake_offset_y = 0
-        if self.shake_time > 0:
-            shake_offset_x = random.randint(-self.shake_magnitude, self.shake_magnitude)
-            shake_offset_y = random.randint(-self.shake_magnitude, self.shake_magnitude)
-            shake_surf = pygame.Surface((self.width, self.height))
-            render_surf = shake_surf
 
         self.ui.draw_background(render_surf)
 
@@ -652,9 +633,6 @@ class PongGame:
                 self.btn_restart.draw(render_surf)
                 self.btn_go_menu.draw(render_surf)
                 self.btn_go_quit.draw(render_surf)
-
-        if self.shake_time > 0:
-            surface.blit(render_surf, (shake_offset_x, shake_offset_y))
 
     def _draw_main_menu(self, surface):
         cx = self.width // 2
