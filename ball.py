@@ -143,9 +143,7 @@ class Ball:
         return False
 
     def draw(self, surface):
-        # Main clean solid ball with squash & stretch
-        rx = max(3, int(self.radius * self.squash_x))
-        ry = max(3, int(self.radius * self.squash_y))
-        ball_rect = pygame.Rect(int(self.x - rx), int(self.y - ry), rx * 2, ry * 2)
-        pygame.draw.ellipse(surface, self.color, ball_rect)
+        rx = int(self.radius)
+        ball_rect = pygame.Rect(int(self.x - rx), int(self.y - rx), rx * 2, rx * 2)
+        pygame.draw.rect(surface, (255, 255, 255), ball_rect)
 

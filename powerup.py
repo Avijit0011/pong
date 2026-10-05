@@ -3,11 +3,11 @@ import random
 import pygame
 
 POWERUP_TYPES = {
-    "SPEED": {"color": (239, 68, 68), "glow": (239, 68, 68), "label": "S"},
-    "SHIELD": {"color": (16, 185, 129), "glow": (16, 185, 129), "label": "W"},
-    "EXTEND": {"color": (245, 158, 11), "glow": (245, 158, 11), "label": "E"},
-    "MULTIBALL": {"color": (99, 102, 241), "glow": (99, 102, 241), "label": "M"},
-    "SLOW_MO": {"color": (6, 182, 212), "glow": (6, 182, 212), "label": "T"}
+    "SPEED": {"color": (255, 255, 255), "glow": (255, 255, 255), "label": "S"},
+    "SHIELD": {"color": (255, 255, 255), "glow": (255, 255, 255), "label": "W"},
+    "EXTEND": {"color": (255, 255, 255), "glow": (255, 255, 255), "label": "E"},
+    "MULTIBALL": {"color": (255, 255, 255), "glow": (255, 255, 255), "label": "M"},
+    "SLOW_MO": {"color": (255, 255, 255), "glow": (255, 255, 255), "label": "T"}
 }
 
 class PowerUp:
@@ -34,19 +34,12 @@ class PowerUp:
         if self.lifespan <= 0:
             return
             
-        pulse_scale = 1.0 + 0.08 * math.sin(self.pulse_time)
-        cur_radius = int(self.radius * pulse_scale)
-        
-        # Soft ambient glow
-        glow_r = cur_radius + 6
-        glow_surf = pygame.Surface((glow_r * 2, glow_r * 2), pygame.SRCALPHA)
-        gc = self.info["glow"]
-        pygame.draw.circle(glow_surf, (gc[0], gc[1], gc[2], 30), (glow_r, glow_r), glow_r)
-        surface.blit(glow_surf, (self.x - glow_r, self.y - glow_r))
+        cur_radius = int(self.radius)
         
         # Main core shape
-        pygame.draw.circle(surface, self.info["color"], (int(self.x), int(self.y)), cur_radius)
-        pygame.draw.circle(surface, (255, 255, 255), (int(self.x), int(self.y)), cur_radius, width=1)
+        rect = pygame.Rect(self.x - cur_radius, self.y - cur_radius, cur_radius * 2, cur_radius * 2)
+        pygame.draw.rect(surface, (0, 0, 0), rect)
+        pygame.draw.rect(surface, (255, 255, 255), rect, width=1)
         
         # Label letter
         txt_surf = font.render(self.info["label"], True, (255, 255, 255))

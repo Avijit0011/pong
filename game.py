@@ -39,11 +39,11 @@ class PongGame:
         self.net_client = None
         self.join_ip_box = InputBox(width // 2 - 130, 245, 260, 42, font=pygame.font.SysFont("Consolas", 20, bold=True), text="127.0.0.1")
         self.status_msg = ""
-        self.status_color = (0, 245, 255)
+        self.status_color = (255, 255, 255)
         
         # Entities
-        self.paddle1 = Paddle(40, height // 2, is_ai=False, color=(241, 245, 249), glow_color=(241, 245, 249))
-        self.paddle2 = Paddle(width - 40, height // 2, is_ai=True, color=(241, 245, 249), glow_color=(241, 245, 249))
+        self.paddle1 = Paddle(40, height // 2, is_ai=False)
+        self.paddle2 = Paddle(width - 40, height // 2, is_ai=True)
         self.paddle2.ai_difficulty = self.ai_difficulty
         
         self.balls = [Ball(width // 2, height // 2)]
@@ -97,25 +97,25 @@ class PongGame:
         self.btn_power = Button(cx - btn_w // 2, 345, btn_w, btn_h, "POWER-UPS: ON", self.ui.btn_font)
         self.btn_vol = Button(cx - btn_w // 2, 395, btn_w, btn_h, f"VOLUME: {int(self.sound.master_volume * 100)}%", self.ui.btn_font)
         
-        self.btn_start = Button(cx - btn_w // 2, 455, btn_w, 44, "START MATCH", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
-        self.btn_quit = Button(cx - btn_w // 2, 509, btn_w, 42, "QUIT", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(244, 63, 94))
+        self.btn_start = Button(cx - btn_w // 2, 455, btn_w, 44, "START MATCH", self.ui.btn_font)
+        self.btn_quit = Button(cx - btn_w // 2, 509, btn_w, 42, "QUIT", self.ui.btn_font)
         
         # Lobby buttons
-        self.btn_connect = Button(cx - 110, 305, 220, 42, "CONNECT", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
-        self.btn_lobby_cancel = Button(cx - 110, 360, 220, 40, "CANCEL", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85))
+        self.btn_connect = Button(cx - 110, 305, 220, 42, "CONNECT", self.ui.btn_font)
+        self.btn_lobby_cancel = Button(cx - 110, 360, 220, 40, "CANCEL", self.ui.btn_font)
 
         # Ready Button
-        self.btn_toggle_ready = Button(cx - 110, self.height // 2 + 10, 220, 44, "TOGGLE READY", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
+        self.btn_toggle_ready = Button(cx - 110, self.height // 2 + 10, 220, 44, "TOGGLE READY", self.ui.btn_font)
 
         # Pause Overlay buttons
-        self.btn_pause_resume = Button(cx - 210, 310, 130, 44, "RESUME", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
+        self.btn_pause_resume = Button(cx - 210, 310, 130, 44, "RESUME", self.ui.btn_font)
         self.btn_pause_menu = Button(cx - 65, 310, 130, 44, "MAIN MENU", self.ui.btn_font)
-        self.btn_pause_quit = Button(cx + 80, 310, 130, 44, "QUIT", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(244, 63, 94))
+        self.btn_pause_quit = Button(cx + 80, 310, 130, 44, "QUIT", self.ui.btn_font)
 
         # Game Over buttons
-        self.btn_restart = Button(cx - 210, 330, 130, 44, "PLAY AGAIN", self.ui.btn_font, color=(56, 189, 248), hover_color=(14, 165, 233), text_color=(15, 23, 42))
+        self.btn_restart = Button(cx - 210, 330, 130, 44, "PLAY AGAIN", self.ui.btn_font)
         self.btn_go_menu = Button(cx - 65, 330, 130, 44, "MAIN MENU", self.ui.btn_font)
-        self.btn_go_quit = Button(cx + 80, 330, 130, 44, "QUIT", self.ui.btn_font, color=(30, 41, 59), hover_color=(51, 65, 85), text_color=(244, 63, 94))
+        self.btn_go_quit = Button(cx + 80, 330, 130, 44, "QUIT", self.ui.btn_font)
 
     def trigger_screen_shake(self, magnitude=3, duration=8):
         self.shake_magnitude = magnitude
@@ -159,8 +159,7 @@ class PongGame:
             chat_sent = self.chat.handle_event(event)
             if chat_sent:
                 sender_label = "P1" if self.mode == "ONLINE_HOST" else "P2"
-                color = (0, 245, 255) if self.mode == "ONLINE_HOST" else (255, 0, 128)
-                self.chat.add_message(sender_label, chat_sent, color=color)
+                self.chat.add_message(sender_label, chat_sent, color=(255, 255, 255))
                 self.pending_outgoing_chat.append(f"[{sender_label}]: {chat_sent}")
                 return
 
@@ -243,7 +242,7 @@ class PongGame:
                     elif self.mode == "ONLINE_JOIN":
                         self.state = "LOBBY_JOIN"
                         self.status_msg = "Enter Host IP address and click Connect"
-                        self.status_color = (200, 220, 240)
+                        self.status_color = (255, 255, 255)
 
                 elif self.btn_quit.check_hover(mouse_pos):
                     self._cleanup_network()
@@ -304,16 +303,16 @@ class PongGame:
         if ok:
             self.state = "LOBBY_HOST"
             self.status_msg = f"WAITING FOR PLAYER 2... (IP: {self.local_ip}:{self.host_port})"
-            self.status_color = (0, 245, 255)
+            self.status_color = (255, 255, 255)
         else:
             self.status_msg = f"ERROR: {msg}"
-            self.status_color = (255, 60, 60)
+            self.status_color = (255, 255, 255)
 
     def _attempt_join_connect(self):
         self._cleanup_network()
         target_ip = self.join_ip_box.text.strip()
         self.status_msg = f"Connecting to {target_ip}:{self.host_port}..."
-        self.status_color = (255, 200, 0)
+        self.status_color = (255, 255, 255)
         
         self.net_client = NetworkClient()
         ok, msg = self.net_client.connect(target_ip, self.host_port)
@@ -324,7 +323,7 @@ class PongGame:
             self.sound.play('click')
         else:
             self.status_msg = f"Failed to connect to {target_ip}"
-            self.status_color = (255, 60, 60)
+            self.status_color = (255, 255, 255)
 
     def _cleanup_network(self):
         if self.net_server:
@@ -410,7 +409,7 @@ class PongGame:
             inc_chat = self.net_client.pop_incoming_chat()
             for msg_str in inc_chat:
                 if msg_str.startswith("[P1]: "):
-                    self.chat.add_message("P1", msg_str[6:], color=(0, 245, 255))
+                    self.chat.add_message("P1", msg_str[6:], color=(255, 255, 255))
 
             # Receive Host State Snapshot
             remote_state = self.net_client.get_game_state()
@@ -450,7 +449,7 @@ class PongGame:
             inc_chat = self.net_server.pop_incoming_chat()
             for msg_str in inc_chat:
                 if msg_str.startswith("[P2]: "):
-                    self.chat.add_message("P2", msg_str[6:], color=(255, 0, 128))
+                    self.chat.add_message("P2", msg_str[6:], color=(255, 255, 255))
 
         # Update Paddles (Paddles can move even in pre-match ready phase)
         self.paddle1.update(self.height, p1_up, p1_dn, balls=self.balls)

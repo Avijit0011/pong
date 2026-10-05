@@ -158,22 +158,11 @@ class Paddle:
 
     def draw(self, surface):
         rect = self.get_rect()
-        
-        # Flash color blend
-        r = int(self.color[0] + (255 - self.color[0]) * self.hit_flash * 0.6)
-        g = int(self.color[1] + (255 - self.color[1]) * self.hit_flash * 0.6)
-        b = int(self.color[2] + (255 - self.color[2]) * self.hit_flash * 0.6)
-        cur_color = (min(255, r), min(255, g), min(255, b))
-
-        # Main rounded paddle bar
-        pygame.draw.rect(surface, cur_color, rect, border_radius=5)
-        
-        # Crisp edge outline
-        pygame.draw.rect(surface, (255, 255, 255), rect, width=1, border_radius=5)
+        pygame.draw.rect(surface, (255, 255, 255), rect)
         
         # Shield wall indicator if active
         if self.has_shield:
             shield_x = rect.x - 12 if rect.x > surface.get_width() / 2 else rect.x + rect.width + 6
             shield_rect = pygame.Rect(shield_x, 16, 4, surface.get_height() - 32)
-            pygame.draw.rect(surface, (52, 211, 153), shield_rect, border_radius=2)
+            pygame.draw.rect(surface, (255, 255, 255), shield_rect)
 
